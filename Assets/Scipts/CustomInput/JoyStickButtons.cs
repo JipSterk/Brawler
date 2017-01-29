@@ -1,0 +1,38 @@
+﻿namespace Brawler.CustomInput
+{
+    public enum JoyStickButtons
+    {
+        Joystick1A = 350,
+        Joystick1B = 351,
+        Joystick1X = 352,
+        Joystick1Y = 353,
+        Joystick1Lb = 354,
+        Joystick1Rb = 355,
+        Joystick1Start = 356,
+        Joystick1Back = 357,
+        Joystick2A = 370,
+        Joystick2B = 371,
+        Joystick2X = 372,
+        Joystick2Y = 373,
+        Joystick2Lb= 374,
+        Joystick2Rb = 375,
+        Joystick2Start = 376,
+        Joystick2Back = 377,
+        Joystick3A = 390,
+        Joystick3B = 391,
+        Joystick3X = 392,
+        Joystick3Y = 353,
+        Joystick3Lb = 394,
+        Joystick3Rb = 395,
+        Joystick3Start = 396,
+        Joystick3Back = 397,
+        Joystick4A = 410,
+        Joystick4B = 411,
+        Joystick4X = 412,
+        Joystick4Y = 353,
+        Joystick4Lb = 414,
+        Joystick4Rb = 415,
+        Joystick4Start = 416,
+        Joystick4Back = 417,
+    }
+}
