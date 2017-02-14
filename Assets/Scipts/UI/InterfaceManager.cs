@@ -29,8 +29,6 @@ namespace Brawler.UI
         [SerializeField] private InputField _matchNameInputField;
         [SerializeField] private InputField _matchPasswordInputField;
         [SerializeField] private InputField _newProfileNameInputField;
-        [SerializeField] private Button _createMatchButton;
-        [SerializeField] private Button _refreshMatchesButton;
         [SerializeField] private Button _quitButton;
         [SerializeField] private Text _outputText;
         [SerializeField] private Text _playerNameText;
@@ -65,8 +63,6 @@ namespace Brawler.UI
 
         private void Start()
         {
-            //todo keep track of all the players that are joined
-            //todo then foreach player that joins make new profile and pass the characters to create ui elements
             _gameManager = GameManager.Instance;
             _customNetworkManager = CustomNetworkManager.Instance;
             _playerControlManager = PlayerControlManager.Instance;
@@ -86,15 +82,6 @@ namespace Brawler.UI
             var allUiButtons = Resources.FindObjectsOfTypeAll<UiButton>();
             foreach (var interfaceMenu in _interfaceMenus)
                 interfaceMenu.Init(allUiButtons);
-        }
-
-        public void InitNetworkUi(CallBack<string, string, bool> callback, CallBack callBack)
-        {
-            _createMatchButton.onClick.AddListener(() =>
-            {
-                callback(_matchNameInputField.text, _matchPasswordInputField.text, true);
-                callBack();
-            });
         }
 
         private void UpdateMenuUi(MenuState menuState)
@@ -135,7 +122,7 @@ namespace Brawler.UI
                     break;
                 case MenuState.PlayerInput:
                     var playerControlsProfiles = PlayerControlManager.Instance.PlayerControlsProfiles;
-                    for (int i = 1; i < _playerProfileParent.childCount; i++)
+                    for (var i = 1; i < _playerProfileParent.childCount; i++)
                         Destroy(_playerProfileParent.GetChild(i).gameObject);
 
                     playerControlsProfiles.InstantiateAllElements(LoadProfile, _playerProfileUiPrefab, _playerProfileParent);

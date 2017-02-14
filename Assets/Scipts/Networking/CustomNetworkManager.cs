@@ -82,7 +82,7 @@ namespace Brawler.Networking
         {
             if(!_initialized)
                 return;
-
+            
             GameServer.RunCallbacks();
 
             if (_connectedToSteam)

@@ -8,7 +8,6 @@ using Brawler.Items;
 using Brawler.LevelManagment;
 using Brawler.Networking;
 using Brawler.SaveLoad;
-using Brawler.UI;
 
 namespace Brawler.GameSettings
 {
@@ -29,10 +28,10 @@ namespace Brawler.GameSettings
         [SerializeField] private MatchSettings _matchSettings;
         [SerializeField] private MatchSettings _defaultMatchSettings;
         [SerializeField] private PlayerOnlineInfo _playerOnlineInfo;
-        [SerializeField] private MenuState _menuState;
         [SerializeField] private GameCamera _gameCameraPrefab;
 
         private static GameManager _instance;
+        private MenuState _menuState;
         private Announcer _announcer;
         private Level _level;
         private List<Item> _activeItems = new List<Item>();

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Steamworks;
+using UnityEngine;
 
 namespace Brawler.Networking.Character
 {
@@ -6,11 +7,10 @@ namespace Brawler.Networking.Character
     {
         [SerializeField] private Behaviour[] _behaviours;
 
+        private Callback<ThreadPriority> x;
+
         private void Start()
         {
-            if(!enabled)
-                return;
-
             foreach (var behaviour in _behaviours)
                 behaviour.enabled = true;
         }

@@ -7,15 +7,15 @@ namespace Brawler.Music
 {
     public class MusicManager : MonoBehaviour
     {
+        public static MusicManager Instance { get { return _instance ?? new GameObject("Music Manager").AddComponent<MusicManager>(); } }
         public List<MusicClip> MusicClips { get { return _musicClips; } }
-        public static MusicManager Instance { get { return _instance; } }
 
         [SerializeField] private List<MusicClip> _musicClips = new List<MusicClip>();
-        [SerializeField] private AudioSource _backGroundAudioSource;
-        [SerializeField] private AudioSource _menuAudioSource;
-        [SerializeField] private AudioSource _effectAudioSource;
-
+        
         private static MusicManager _instance;
+        private AudioSource _backGroundAudioSource;
+        private AudioSource _menuAudioSource;
+        private AudioSource _effectAudioSource;
         private float _backGroundVolume;
         private float _menuVolume;
         private float _soundEffectsVolume;
@@ -34,24 +34,32 @@ namespace Brawler.Music
 
         private void Start()
         {
+            _backGroundAudioSource = new GameObject("Back Ground").AddComponent<AudioSource>();
+            _menuAudioSource = new GameObject("Menu").AddComponent<AudioSource>();
+            _effectAudioSource = new GameObject("Effect").AddComponent<AudioSource>();
+
+            _backGroundAudioSource.transform.SetParent(transform);
+            _menuAudioSource.transform.SetParent(transform);
+            _effectAudioSource.transform.SetParent(transform);
+
             SaveLoadManager.Instance.WhenSaveFileExist += LoadSoundSettings;
         }
         
-        public void PlayClip(MusicClip clip)
+        public void PlayClip(MusicClip musicClip)
         {
-            switch (clip.ClipType)
+            switch (musicClip.ClipType)
             {
                 case ClipType.Menu:
-                    clip.Init(_menuAudioSource, _menuVolume);
+                    musicClip.Init(_menuAudioSource, _menuVolume);
                     break;
                 case ClipType.Ingame:
-                    clip.Init(_backGroundAudioSource, _backGroundVolume);
+                    musicClip.Init(_backGroundAudioSource, _backGroundVolume);
                     break;
                 case ClipType.Character:
-                    clip.Init(_effectAudioSource, _soundEffectsVolume);
+                    musicClip.Init(_effectAudioSource, _soundEffectsVolume);
                     break;
             }
-            clip.Play();
+            musicClip.Play();
         }
 
         public void StopClip(MusicClip clip)

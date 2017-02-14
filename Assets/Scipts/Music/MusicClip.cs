@@ -21,7 +21,7 @@ namespace Brawler.Music
         public void Init(AudioSource source, float volume)
         {
             _source = source;
-            _volume += volume;
+            _volume = volume;
             
             _source.clip = _audioClip;
             _source.volume = _volume;

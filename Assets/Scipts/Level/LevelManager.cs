@@ -44,28 +44,15 @@ namespace Brawler.LevelManagment
         public IEnumerator LoadLevelAsync(Level level)
         {
             _currentLevel = level;
-            var asyncOperation = SceneManager.LoadSceneAsync(_currentLevel.Scene.name);
+            var loadSceneAsync = SceneManager.LoadSceneAsync(_currentLevel.Scene.name);
 
-            while (!asyncOperation.isDone)
+            while (!loadSceneAsync.isDone)
                 yield return null;
             
             if (OnLevelWasLoaded != null)
                 OnLevelWasLoaded(_currentLevel);
         }
-
-        public IEnumerator LoadRandomLevelAsync()
-        {
-            var level = GetRandomLevel();
-            _currentLevel = level;
-            var asyncOperation = SceneManager.LoadSceneAsync(_currentLevel.Scene.name);
-
-            while (!asyncOperation.isDone)
-                yield return null;
-
-            if (OnLevelWasLoaded != null)
-                OnLevelWasLoaded(_currentLevel);
-        }
-
+        
         private void LoadLevelsData(SaveData saveData)
         {
             for (var i = 0; i < saveData.LevelsData.Count; i++)
