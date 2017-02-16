@@ -9,18 +9,18 @@ namespace Brawler.UI
         [SerializeField] private Button _button;
         [SerializeField] private Text _text;
 
-        protected T _t;
+        protected T Item;
         private event CallBack<T> CallBack;
         
-        public virtual void Init(T t, CallBack<T> callBack)
+        public virtual void Init(T item, CallBack<T> callBack)
         {
-            _t = t;
+            Item = item;
 
             if(callBack == null || _button == null)
                 return;
 
             CallBack = callBack;
-            _button.onClick.AddListener(() => CallBack(_t));
+            _button.onClick.AddListener(() => CallBack(Item));
         }
 
         protected virtual void AddListener(UnityAction unityAction)

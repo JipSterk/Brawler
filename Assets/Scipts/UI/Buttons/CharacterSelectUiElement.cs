@@ -14,8 +14,8 @@ namespace Brawler.UI
         {
             base.Init(character, callBack);
 
-            transform.name = string.Format("Selecting: {0}", _t.CharacterInfo.CharacterName);
-            SetText(_t.CharacterInfo.CharacterName);
+            transform.name = string.Format("Selecting: {0}", Item.CharacterInfo.CharacterName);
+            SetText(Item.CharacterInfo.CharacterName);
             _image.sprite = character.CharacterPortrait;
         }
     }

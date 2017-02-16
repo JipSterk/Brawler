@@ -8,7 +8,7 @@ namespace Brawler.Networking
         public override void Init(MatchInfoSnapshot matchInfoSnapshot, CallBack<MatchInfoSnapshot> callBack)
         {
             base.Init(matchInfoSnapshot, callBack);
-            SetText(string.Format("{0} ({1}/{2}", _t.name, _t.currentSize, _t.maxSize));
+            SetText(string.Format("{0} ({1}/{2}", Item.name, Item.currentSize, Item.maxSize));
         }
     }
 }

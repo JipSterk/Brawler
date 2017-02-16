@@ -1,8 +1,5 @@
-﻿using System;
-
-namespace Brawler.Music
+﻿namespace Brawler.Music
 {
-    [Serializable]
     public enum ClipType
     {
         Menu,

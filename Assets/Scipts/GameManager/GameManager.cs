@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Brawler.Characters;
@@ -18,10 +19,9 @@ namespace Brawler.GameSettings
         public PlayerOnlineInfo PlayerOnlineInfo { get { return _playerOnlineInfo; } }
         public MenuState MenuState { get { return _menuState; } }
         public List<Item> ActiveItems { get { return _activeItems; } }
-        public List<GamePlayer> GamePlayers { get { return _gamePlayers; } }
         public Announcer Announcer { get { return _announcer; } }
 
-        public event CallBack<List<GamePlayer>, List<Item>, Level> OnStartMatch;
+        public event CallBack<GamePlayer, GamePlayer, List<Item>, Level> OnStartMatch;
         public event CallBack<MatchSettings> OnMatchSettingsUpdate;
         public event CallBack<MenuState> OnUpdateMenuState;
 
@@ -35,7 +35,8 @@ namespace Brawler.GameSettings
         private Announcer _announcer;
         private Level _level;
         private List<Item> _activeItems = new List<Item>();
-        private List<GamePlayer> _gamePlayers = new List<GamePlayer>();
+        private GamePlayer _player2;
+        private GamePlayer _player1;
 
         private void Awake()
         {
@@ -52,7 +53,7 @@ namespace Brawler.GameSettings
         private void Start()
         {
             _announcer = GetComponent<Announcer>();
-
+            
             SaveLoadManager.Instance.WhenSaveFileExist += LoadPlayerOnlineInfo;
             StartCoroutine(Init());
         }
@@ -80,27 +81,41 @@ namespace Brawler.GameSettings
                 OnUpdateMenuState( _menuState);
         }
 
-        public void AddPlayer(GamePlayer gamePlayer)
+        public void AddPlayer(GamePlayer gamePlayer, SelectingForPlayer selectingForPlayer)
         {
-            _gamePlayers.Add(gamePlayer);
+            switch (selectingForPlayer)
+            {
+                case SelectingForPlayer.Player1:
+                    _player1 = gamePlayer;
+                    break;
+                case SelectingForPlayer.Player2:
+                    _player2 = gamePlayer;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("selectingForPlayer", selectingForPlayer, null);
+            }
         }
 
-        public IEnumerator StartMatch(Level level)
+        public void StartMatch(Level level)
+        {
+            StartCoroutine(StartMatchInternal(level));
+        }
+
+        public IEnumerator StartMatchInternal(Level level)
         {
             _level = level;
             _activeItems = ItemManager.Instance.AllActiveItems;
-
-            if (OnStartMatch != null)
-                OnStartMatch(_gamePlayers, _activeItems, _level);
-
+            
             yield return StartCoroutine(LevelManager.Instance.LoadLevelAsync(_level));
             _level.SetupSpawnPoints();
+            
+            if (OnStartMatch != null)
+                OnStartMatch(_player1, _player2, _activeItems, _level);
 
             SetupGameCamera();
 
-            for (var i = 0; i < _gamePlayers.Count; i++)
-                CharacterManager.Instance.InstantiateCharacter(_gamePlayers[i].Character,
-                    _gamePlayers[i].PlayerControlsProfile, _level.SpawnPoints[i]);
+            CharacterManager.Instance.InstantiateCharacter(_player1.Character, _player1.PlayerControlsProfile, _level.Player1SpawnPoint);
+            CharacterManager.Instance.InstantiateCharacter(_player2.Character, _player2.PlayerControlsProfile, _level.Player2SpawnPoint);
         }
 
         private void LoadPlayerOnlineInfo(SaveData saveData)
@@ -111,7 +126,7 @@ namespace Brawler.GameSettings
         private void SetupGameCamera()
         {
             var gameCamera = Instantiate(_gameCameraPrefab, new Vector3(0, 0, -10), Quaternion.identity);
-            gameCamera.Init(_gamePlayers);
+            gameCamera.Init(_player1.Character, _player2.Character);
         }
     }
 } 

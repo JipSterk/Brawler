@@ -151,8 +151,6 @@ namespace Brawler.Characters
 
         private float GetCharacterSpeed()
         {
-            return _characterStats.WalkSpeed;
-
             var speed = _characterStats.WalkSpeed;
             if (IsCrouch()) speed *= _characterStats.CrouchSpeed;
             if (IsSprint()) speed *= _characterStats.SprintSpeed;

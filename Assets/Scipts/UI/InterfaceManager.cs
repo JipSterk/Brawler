@@ -79,9 +79,9 @@ namespace Brawler.UI
             _newProfileNameInputField.onEndEdit.AddListener(NamePlayerProfile);
             _quitButton.onClick.AddListener(Application.Quit);
 
-            var allUiButtons = Resources.FindObjectsOfTypeAll<UiButton>();
+            var uiButtons = Resources.FindObjectsOfTypeAll<UiButton>();
             foreach (var interfaceMenu in _interfaceMenus)
-                interfaceMenu.Init(allUiButtons);
+                interfaceMenu.Init(uiButtons);
         }
 
         private void UpdateMenuUi(MenuState menuState)
@@ -109,22 +109,17 @@ namespace Brawler.UI
                     unlockedCharacters.InstantiateAllElements(SelectCharacter, _characterSelectUiElementPrefab, _characterElementParent);
                     break;
                 case MenuState.LevelSelection:
-                    var unlockedLevels = LevelManager.Instance.UnlockedLevels;
+                    var unlockedLevels = LevelManager.Instance.UnlockedLevels();
                     _levelElementParent.DestroyAllChilderen();
-                    unlockedLevels.InstantiateAllElements(SelectLevel, _levelUiElementPrefab, _levelElementParent);
+                    unlockedLevels.InstantiateAllElements(_gameManager.StartMatch, _levelUiElementPrefab, _levelElementParent);
                     break;
                 case MenuState.MatchRules:
                     break;
                 case MenuState.OfflineMultiplayer:
-                    var activeCharacter = _gameManager.GamePlayers.Select(player => player.Character).ToList();
-                    _characterUiParent.DestroyAllChilderen();
-                    activeCharacter.InstantiateAllElements(null, _characterUiElementPrefab, _characterElementParent);
                     break;
                 case MenuState.PlayerInput:
                     var playerControlsProfiles = PlayerControlManager.Instance.PlayerControlsProfiles;
-                    for (var i = 1; i < _playerProfileParent.childCount; i++)
-                        Destroy(_playerProfileParent.GetChild(i).gameObject);
-
+                    _playerProfileParent.DestoryAllChilderen(1);
                     playerControlsProfiles.InstantiateAllElements(LoadProfile, _playerProfileUiPrefab, _playerProfileParent);
                     break;
                 case MenuState.SoundSettings:
@@ -140,12 +135,6 @@ namespace Brawler.UI
             }
         }
         
-        private void SelectLevel(Level level)
-        {
-            Debug.LogFormat("Selecting: {0}", level.LevelData.LevelName);
-            StartCoroutine(_gameManager.StartMatch(level));
-        }
-
         private void LoadProfile(PlayerControlsProfile playerControlsProfile)
         {
             Debug.Log("Loaded profile: " + playerControlsProfile.ProfileName);
@@ -193,15 +182,8 @@ namespace Brawler.UI
                 _newProfileNameInputField.text = null;
                 return;
             }
-
-            var joystickIndex = _playerControlManager.GetJoyStickIndex();
-
-            _playerControlManager.CreatePlayerControlsProfile(joystickIndex, profileName);
-        }
-
-        public InterfaceMenu GetInterfaceMenu(string interfaceMenuName)
-        {
-            return _interfaceMenus.First(x => x.Name == interfaceMenuName);
+            
+            _playerControlManager.CreatePlayerControlsProfile(_playerControlManager.GetJoyStickIndex(), profileName);
         }
     }
 }

@@ -1,12 +1,10 @@
-using System;
-
 namespace Brawler.LevelManagment
 {
-    [Serializable]
     public enum LevelSpawnPointType
     {
         Respawn,
-        Spawn,
+        Player1,
+        Player2,
         Item
     }
 }

@@ -8,8 +8,8 @@ namespace Brawler.UI
         {
             base.Init(playerControlsProfile, callBack);
 
-            transform.name = string.Format("Selecting: {0}", _t.ProfileName);
-            SetText(_t.ProfileName);
+            transform.name = string.Format("Selecting: {0}", Item.ProfileName);
+            SetText(Item.ProfileName);
         }
     }
 }

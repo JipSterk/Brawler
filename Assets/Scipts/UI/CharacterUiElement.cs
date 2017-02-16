@@ -10,11 +10,11 @@ namespace Brawler.UI
 
         public override void Init(Character character, CallBack<Character> callBack)
         {
-            _t = character;
+            Item = character;
 
-            transform.name = string.Format("{0} UIProfile", _t.CharacterInfo.CharacterName);
-            _characterImage.sprite = _t.CharacterPortrait;
-            _t.OnCharacterDamage += UpdateCharacterInfoUi;
+            transform.name = string.Format("{0} UIProfile", Item.CharacterInfo.CharacterName);
+            _characterImage.sprite = Item.CharacterPortrait;
+            Item.OnCharacterDamage += UpdateCharacterInfoUi;
         }
         
         private void UpdateCharacterInfoUi(float procent)

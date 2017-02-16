@@ -12,8 +12,8 @@ namespace Brawler.UI
         {
             base.Init(level, callBack);
 
-            transform.name = string.Format("Selecting: {0}", _t.LevelData.LevelName);
-            SetText(_t.LevelData.LevelName);
+            transform.name = string.Format("Selecting: {0}", Item.LevelData.LevelName);
+            SetText(Item.LevelData.LevelName);
             _image.sprite = level.LevelSprite;
         }
     }

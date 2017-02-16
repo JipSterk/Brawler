@@ -7,17 +7,13 @@ using UnityEngine.SceneManagement;
 
 namespace Brawler.LevelManagment
 {
-    public delegate void OnLevelWasLoaded(Level level);
-
     public class LevelManager : MonoBehaviour
     {
-        public Level CurrentLevel { get { return _currentLevel; } }
-        public List<Level> AllLevels { get { return _allLevels; } }
-        public List<Level> UnlockedLevels { get { return GetUnlockedLevels(); } }
-        public List<LevelData> AllLevelDatas { get { return GetLevelData(); } }
         public static LevelManager Instance { get { return _instance; } }
-        
-        public event OnLevelWasLoaded OnLevelWasLoaded;
+        public List<Level> AllLevels { get { return _allLevels; } }
+        public Level CurrentLevel { get { return _currentLevel; } }
+
+        public event CallBack<Level> OnLevelWasLoaded;
 
         [SerializeField] private List<Level> _allLevels = new List<Level>();
 
@@ -59,17 +55,17 @@ namespace Brawler.LevelManagment
                 _allLevels[i].Load(saveData.LevelsData[i]);
         }
 
-        private List<LevelData> GetLevelData()
+        public List<LevelData> GetLevelDatas()
         {
             return _allLevels.Select(level => level.LevelData).ToList();
         }
 
-        private List<Level> GetUnlockedLevels()
+        public List<Level> GetUnlockedLevels()
         {
             return _allLevels.Where(level => level.LevelData.IsUnlocked).ToList();
         }
 
-        private Level GetRandomLevel()
+        public Level GetRandomLevel()
         {
             return _allLevels[Random.Range(0, _allLevels.Count)];
         }

@@ -69,9 +69,8 @@ namespace Brawler.Characters
 
         public void UnlockCharacter(string characterName)
         {
-            var character = _allCharacters.Find(x => x.CharacterInfo.CharacterName == characterName);
+            var character = _allCharacters.First(x => x.CharacterInfo.CharacterName == characterName);
             character.CharacterInfo.SetUnlocked();
-            //todo subract currency & save the game
         }
     }
 }

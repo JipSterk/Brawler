@@ -18,6 +18,12 @@ namespace Brawler.Extentions
         //    }
         //}
 
+        public static void DestoryAllChilderen(this Transform parent, int offset)
+        {
+            for (var i = offset; i < parent.childCount; i++)
+                Object.Destroy(parent.GetChild(i).gameObject);
+        }
+
         public static void DestroyAllChilderen(this IEnumerable parent)
         {
             foreach (Transform t in parent)
