@@ -36,15 +36,13 @@ namespace Brawler.Characters
         public void InstantiateCharacter(Character character, PlayerControlsProfile playerControlsProfile, LevelSpawnPoint levelSpawnPoint)
         {
             var tempCharacter = Instantiate(character, levelSpawnPoint.Position, Quaternion.identity, levelSpawnPoint.transform);
-            var characterOutline = _settingsManager.Settings.CharacterOutline;
-            tempCharacter.Init(playerControlsProfile, characterOutline);
+            tempCharacter.Init(playerControlsProfile, _settingsManager.Settings.CharacterOutline);
         }
 
         public void InstantiateRandomCharacter(PlayerControlsProfile playerControlsProfile, LevelSpawnPoint levelSpawnPoint)
         {
             var tempCharacter = Instantiate(GetRandomCharacter(), levelSpawnPoint.Position, Quaternion.identity, levelSpawnPoint.transform);
-            var characterOutline = _settingsManager.Settings.CharacterOutline;
-            tempCharacter.Init(playerControlsProfile, characterOutline);
+            tempCharacter.Init(playerControlsProfile, _settingsManager.Settings.CharacterOutline);
         }
 
         private Character GetRandomCharacter()

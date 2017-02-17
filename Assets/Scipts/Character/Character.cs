@@ -3,7 +3,6 @@ using System.Collections;
 using Brawler.CustomInput;
 using Brawler.GameSettings;
 using Brawler.LevelManagment;
-using Brawler.UI;
 
 namespace Brawler.Characters
 {

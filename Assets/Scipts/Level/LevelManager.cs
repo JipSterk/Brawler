@@ -55,12 +55,12 @@ namespace Brawler.LevelManagment
                 _allLevels[i].Load(saveData.LevelsData[i]);
         }
 
-        public List<LevelData> GetLevelDatas()
+        public List<LevelData> LevelDatas()
         {
             return _allLevels.Select(level => level.LevelData).ToList();
         }
 
-        public List<Level> GetUnlockedLevels()
+        public List<Level> UnlockedLevels()
         {
             return _allLevels.Where(level => level.LevelData.IsUnlocked).ToList();
         }

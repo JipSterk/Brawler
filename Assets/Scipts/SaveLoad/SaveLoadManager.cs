@@ -46,7 +46,7 @@ namespace Brawler.SaveLoad
             _saveDataPath = string.Format("{0}/{1}", Application.dataPath, _saveDataName);
             GatherAllData += GatherData;
 
-            if (DoesSaveExist())
+            if (File.Exists(_saveDataPath))
                 LoadFromDisk();
             else
                 CreateFirstSave();
@@ -59,7 +59,7 @@ namespace Brawler.SaveLoad
         {
             var allPlayerControlsProfiles = PlayerControlManager.Instance.PlayerControlsProfiles;
             var allCharacterInfos = CharacterManager.Instance.CharacterInfos();
-            var allLevels = LevelManager.Instance.AllLevelDatas;
+            var allLevels = LevelManager.Instance.LevelDatas();
             var playerInfo = new PlayerOnlineInfo(SteamFriends.GetPersonaName(), SteamUtils.GetIPCountry());
             var settings = SettingsManager.Instance.DefaultSettings;
             _saveData = new SaveData(allPlayerControlsProfiles, allCharacterInfos, allLevels, playerInfo, settings);
@@ -70,7 +70,7 @@ namespace Brawler.SaveLoad
         {
             var allPlayerControlsProfiles = PlayerControlManager.Instance.PlayerControlsProfiles;
             var allCharacterInfos = CharacterManager.Instance.CharacterInfos();
-            var allLevels = LevelManager.Instance.AllLevelDatas;
+            var allLevels = LevelManager.Instance.LevelDatas();
             var settings = SettingsManager.Instance.Settings;
             var playerOnlineInfo = GameManager.Instance.PlayerOnlineInfo;
 
@@ -98,11 +98,6 @@ namespace Brawler.SaveLoad
         private void DeleteSaveGame()
         {
             File.Delete(_saveDataPath);
-        }
-
-        private bool DoesSaveExist()
-        {
-            return File.Exists(_saveDataPath);
         }
     }
 }

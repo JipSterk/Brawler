@@ -9,10 +9,10 @@ namespace Brawler.CustomInput
 {
     public class PlayerControlManager : MonoBehaviour
     {
+        public static PlayerControlManager Instance { get { return _instance; } }
         public List<PlayerControlsProfile> PlayerControlsProfiles { get { return _playerControlsProfiles; } }
         public List<UiJoyStick> UiJoySticks { get { return _uiJoySticks; } }
-        public static PlayerControlManager Instance { get{ return _instance; } }
-
+        
         [SerializeField] private UiJoyStick _uiJoyStickPrefab;
 
         private static PlayerControlManager _instance;
@@ -41,7 +41,7 @@ namespace Brawler.CustomInput
 
             _saveLoadManager.WhenSaveFileExist += LoadPlayerProfiles;
             SetupJoySticks();
-            Init();
+            //Init();
         }
 
         private void Init()
