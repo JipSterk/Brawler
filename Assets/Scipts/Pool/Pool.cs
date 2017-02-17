@@ -6,6 +6,8 @@ namespace Brawler.Pooling
 {
     public struct Pool
     {
+        public List<Component> Components { get { return _components; } }
+
         private Component _component;
         private Transform _parent;
         private List<Component> _components;

@@ -7,16 +7,11 @@ namespace Brawler.Extentions
 {
     public static class ListExtentions
     {
-        //public static void InstantiateAll<T>(this List<T> list, T prefab, Transform parent) where T : Object
-        //{
-        //    foreach (var item in list)
-        //    {
-        //        var tempObject = Object.Instantiate(prefab, parent);
-
-        //        if (!(prefab is BaseUiElement<T>)) continue;
-        //        tempObject.Init(item);
-        //    }
-        //}
+        public static void DestroyAllChilderen(this IEnumerable parent)
+        {
+            foreach (Transform child in parent)
+                Object.Destroy(child.gameObject);
+        }
 
         public static void DestoryAllChilderen(this Transform parent, int offset)
         {
@@ -24,10 +19,16 @@ namespace Brawler.Extentions
                 Object.Destroy(parent.GetChild(i).gameObject);
         }
 
-        public static void DestroyAllChilderen(this IEnumerable parent)
+        public static void ToggleAllChilderen(this IEnumerable parent, bool active)
         {
-            foreach (Transform t in parent)
-                Object.Destroy(t.gameObject);
+            foreach (Transform child in parent)
+                child.gameObject.SetActive(active);
+        }
+
+        public static void ToggleAllChilderen(this Transform parent, bool active, int offset)
+        {
+            for (var i = offset; i < parent.childCount; i++)
+                parent.GetChild(i).gameObject.SetActive(active);
         }
     }
 }

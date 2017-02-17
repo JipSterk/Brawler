@@ -1,11 +1,14 @@
-﻿using UnityEngine;
+﻿using Brawler.Pooling;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Brawler.UI
 {
-    public abstract class BaseUiElement<T> : MonoBehaviour
+    public abstract class BaseUiElement<T> : MonoBehaviour, IPoolAble
     {
+        public virtual Component Component { get { return this; } }
+
         [SerializeField] private Button _button;
         [SerializeField] private Text _text;
 
@@ -15,7 +18,7 @@ namespace Brawler.UI
         public virtual void Init(T item, CallBack<T> callBack)
         {
             Item = item;
-
+            
             if(callBack == null || _button == null)
                 return;
 
@@ -41,6 +44,11 @@ namespace Brawler.UI
         protected virtual void SetText(string text)
         {
             _text.text = text;
+        }
+        
+        public virtual void OnDisable()
+        {
+            PoolManager.Instance.AddToPool(this);
         }
     }
 }

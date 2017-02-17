@@ -7,6 +7,7 @@ using Brawler.Extentions;
 using Brawler.GameSettings;
 using Brawler.LevelManagment;
 using Brawler.Networking;
+using Brawler.Pooling;
 using Brawler.Steam;
 using Brawler.UI.Extentions;
 using Steamworks;
@@ -49,7 +50,8 @@ namespace Brawler.UI
         private GameManager _gameManager;
         private PlayerControlManager _playerControlManager;
         private CustomNetworkManager _customNetworkManager;
-        
+        private PoolManager _poolManager;
+
         private void Awake()
         {
             if (_instance)
@@ -105,12 +107,12 @@ namespace Brawler.UI
                     break;
                 case MenuState.CharacterSelection:
                     var unlockedCharacters = CharacterManager.Instance.UnlockedCharacters();
-                    _characterElementParent.DestroyAllChilderen();
+                    _characterElementParent.ToggleAllChilderen(false);
                     unlockedCharacters.InstantiateAllElements(SelectCharacter, _characterSelectUiElementPrefab, _characterElementParent);
                     break;
                 case MenuState.LevelSelection:
                     var unlockedLevels = LevelManager.Instance.UnlockedLevels();
-                    _levelElementParent.DestroyAllChilderen();
+                    _levelElementParent.ToggleAllChilderen(false);
                     unlockedLevels.InstantiateAllElements(_gameManager.StartMatch, _levelUiElementPrefab, _levelElementParent);
                     break;
                 case MenuState.MatchRules:
@@ -119,7 +121,7 @@ namespace Brawler.UI
                     break;
                 case MenuState.PlayerInput:
                     var playerControlsProfiles = PlayerControlManager.Instance.PlayerControlsProfiles;
-                    _playerProfileParent.DestoryAllChilderen(1);
+                    _playerProfileParent.ToggleAllChilderen(false, 1);
                     playerControlsProfiles.InstantiateAllElements(LoadProfile, _playerProfileUiPrefab, _playerProfileParent);
                     break;
                 case MenuState.SoundSettings:

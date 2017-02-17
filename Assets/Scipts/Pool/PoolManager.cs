@@ -23,6 +23,21 @@ namespace Brawler.Pooling
             DontDestroyOnLoad(gameObject);
         }
 
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+                DebugPools();
+        }
+
+        private void DebugPools()
+        {
+            foreach (var pool in _pools)
+            {
+                foreach (var component in pool.Value.Components)
+                    Debug.LogFormat("Component: {0}", component.name);
+            }
+        }
+
         public Pool CreatePool(IPoolAble iPoolAble, int count = 20, Transform parent = null)
         {
             if (_pools.ContainsKey(iPoolAble.Component.GetType()))
@@ -46,7 +61,7 @@ namespace Brawler.Pooling
 
         public void AddToPool(Component component)
         {
-            if(_pools.ContainsKey(component.GetType()))
+            if(!_pools.ContainsKey(component.GetType()))
                 return;
 
             _pools[component.GetType()].AddToPool(component);
