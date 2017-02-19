@@ -7,23 +7,19 @@ namespace Brawler.UI
 {
     public abstract class BaseUiElement<T> : MonoBehaviour, IPoolAble
     {
-        public virtual Component Component { get { return this; } }
+        public abstract Component Component { get; }
 
         [SerializeField] private Button _button;
         [SerializeField] private Text _text;
 
         protected T Item;
-        private event CallBack<T> CallBack;
         
         public virtual void Init(T item, CallBack<T> callBack)
         {
             Item = item;
-            
-            if(callBack == null || _button == null)
-                return;
-
-            CallBack = callBack;
-            _button.onClick.AddListener(() => CallBack(Item));
+        
+            if(callBack != null)
+                _button.onClick.AddListener(() => callBack(Item));
         }
 
         protected virtual void AddListener(UnityAction unityAction)
@@ -45,10 +41,7 @@ namespace Brawler.UI
         {
             _text.text = text;
         }
-        
-        public virtual void OnDisable()
-        {
-            PoolManager.Instance.AddToPool(this);
-        }
+
+        public abstract void OnDisable();
     }
 }

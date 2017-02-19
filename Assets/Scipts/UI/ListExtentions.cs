@@ -1,34 +1,36 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using Brawler.UI;
-using UnityEngine;
 
 namespace Brawler.Extentions
 {
     public static class ListExtentions
     {
-        public static void DestroyAllChilderen(this IEnumerable parent)
+        public static void Shuffle<T>(this T[] array)
         {
-            foreach (Transform child in parent)
-                Object.Destroy(child.gameObject);
+            var random = new Random();
+            var length = array.Length;
+
+            for (var i = 0; i < length; i++)
+            {
+                var index = i + (int) (random.NextDouble() * (length - i));
+                var item = array[i];
+                array[index] = array[i];
+                array[i] = item;
+            }
         }
 
-        public static void DestoryAllChilderen(this Transform parent, int offset)
+        public static void Shuffle<T>(this List<T> list)
         {
-            for (var i = offset; i < parent.childCount; i++)
-                Object.Destroy(parent.GetChild(i).gameObject);
-        }
+            var random = new Random();
+            var length = list.Count;
 
-        public static void ToggleAllChilderen(this IEnumerable parent, bool active)
-        {
-            foreach (Transform child in parent)
-                child.gameObject.SetActive(active);
-        }
-
-        public static void ToggleAllChilderen(this Transform parent, bool active, int offset)
-        {
-            for (var i = offset; i < parent.childCount; i++)
-                parent.GetChild(i).gameObject.SetActive(active);
+            for (var i = 0; i < length; i++)
+            {
+                var index = i + (int) (random.NextDouble() * (length - i));
+                var item = list[i];
+                list[index] = list[i];
+                list[i] = item;
+            }
         }
     }
 }

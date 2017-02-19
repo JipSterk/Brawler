@@ -10,7 +10,7 @@ namespace Brawler.UI
         public Button Button { get { return _button; } }
 
         [SerializeField] private MenuState _menuState;
-
+    
         private Button _button;
         
         public void Init(CallBack<MenuState> callBack)

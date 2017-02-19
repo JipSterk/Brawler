@@ -62,6 +62,7 @@ namespace Brawler.SaveLoad
             var allLevels = LevelManager.Instance.LevelDatas();
             var playerInfo = new PlayerOnlineInfo(SteamFriends.GetPersonaName(), SteamUtils.GetIPCountry());
             var settings = SettingsManager.Instance.DefaultSettings;
+
             _saveData = new SaveData(allPlayerControlsProfiles, allCharacterInfos, allLevels, playerInfo, settings);
             SaveToDisk(_saveData);
         }
@@ -71,11 +72,10 @@ namespace Brawler.SaveLoad
             var allPlayerControlsProfiles = PlayerControlManager.Instance.PlayerControlsProfiles;
             var allCharacterInfos = CharacterManager.Instance.CharacterInfos();
             var allLevels = LevelManager.Instance.LevelDatas();
-            var settings = SettingsManager.Instance.Settings;
             var playerOnlineInfo = GameManager.Instance.PlayerOnlineInfo;
-
-            var saveData = new SaveData(allPlayerControlsProfiles, allCharacterInfos, allLevels, playerOnlineInfo, settings);
-            _saveData = saveData;
+            var settings = SettingsManager.Instance.Settings;
+            
+            _saveData = new SaveData(allPlayerControlsProfiles, allCharacterInfos, allLevels, playerOnlineInfo, settings);
             SaveToDisk(_saveData);
         }
 

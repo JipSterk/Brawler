@@ -11,13 +11,9 @@ namespace Brawler.CustomInput
     {
         public static PlayerControlManager Instance { get { return _instance; } }
         public List<PlayerControlsProfile> PlayerControlsProfiles { get { return _playerControlsProfiles; } }
-        public List<UiJoyStick> UiJoySticks { get { return _uiJoySticks; } }
         
-        [SerializeField] private UiJoyStick _uiJoyStickPrefab;
-
         private static PlayerControlManager _instance;
         private List<PlayerControlsProfile> _playerControlsProfiles = new List<PlayerControlsProfile>();
-        private List<UiJoyStick> _uiJoySticks = new List<UiJoyStick>();
         private string[] _buttonNames;
         private JoyStickButtons[,] _joyStickButtons;
         private JoyStickAxises[,] _joyStickAxises;
@@ -41,23 +37,8 @@ namespace Brawler.CustomInput
 
             _saveLoadManager.WhenSaveFileExist += LoadPlayerProfiles;
             SetupJoySticks();
-            //Init();
         }
-
-        private void Init()
-        {
-            var connectedJoysticks = Input.GetJoystickNames().Where(x => !string.IsNullOrEmpty(x)).ToArray();
-            var parent = InterfaceManager.Instance.InterfaceCanvasTransform;
-
-            for (var i = 0; i < connectedJoysticks.Length; i++)
-            {
-                var playerControlsProfile = CreatePlayerControlsProfile((JoyStickIndex)i, null);
-                var uiJoyStick = Instantiate(_uiJoyStickPrefab, parent);
-                uiJoyStick.Init(playerControlsProfile);
-                _uiJoySticks.Add(uiJoyStick);
-            }
-        }
-
+        
         private void SetupJoySticks()
         {
             _buttonNames = new[]
@@ -119,10 +100,10 @@ namespace Brawler.CustomInput
             return axises;
         }
 
-        public PlayerControlsProfile CreatePlayerControlsProfile(JoyStickIndex joyStickIndex, string profileName)
+        public PlayerControlsProfile CreatePlayerControlsProfile(string profileName)
         {
-            var format = string.Format("{0} {1}", joyStickIndex, profileName);
-            var playerControlsProfile = new PlayerControlsProfile(format, joyStickIndex);
+            var format = string.Format("{0} {1}", GetJoyStickIndex(), profileName);
+            var playerControlsProfile = new PlayerControlsProfile(format, GetJoyStickIndex());
             _playerControlsProfiles.Add(playerControlsProfile);
 
             return playerControlsProfile;

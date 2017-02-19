@@ -18,7 +18,7 @@ namespace Brawler.UI
 
         public override void OnDisable()
         {
-            PoolManager.Instance.AddToPool(this);
+            PoolManager.Instance.ReturnToPool(this);
         }
     }
 }

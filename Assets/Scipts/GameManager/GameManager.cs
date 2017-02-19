@@ -53,14 +53,16 @@ namespace Brawler.GameSettings
         private void Start()
         {
             _announcer = GetComponent<Announcer>();
-            
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
             SaveLoadManager.Instance.WhenSaveFileExist += LoadPlayerOnlineInfo;
+            _matchSettings = _defaultMatchSettings;
             StartCoroutine(Init());
         }
 
         private IEnumerator Init()
         {
-            _matchSettings = _defaultMatchSettings;
             yield return null;
             UpdateMenuState(MenuState.TitleScreen);
         }
@@ -78,7 +80,7 @@ namespace Brawler.GameSettings
             _menuState = menuState;
 
             if (OnUpdateMenuState != null)
-                OnUpdateMenuState( _menuState);
+                OnUpdateMenuState(_menuState);
         }
 
         public void AddPlayer(GamePlayer gamePlayer, SelectingForPlayer selectingForPlayer)
@@ -101,7 +103,7 @@ namespace Brawler.GameSettings
             StartCoroutine(StartMatchInternal(level));
         }
 
-        public IEnumerator StartMatchInternal(Level level)
+        private IEnumerator StartMatchInternal(Level level)
         {
             _level = level;
             _activeItems = ItemManager.Instance.AllActiveItems;

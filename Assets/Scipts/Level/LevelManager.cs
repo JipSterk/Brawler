@@ -51,8 +51,8 @@ namespace Brawler.LevelManagment
         
         private void LoadLevelsData(SaveData saveData)
         {
-            for (var i = 0; i < saveData.LevelsData.Count; i++)
-                _allLevels[i].Load(saveData.LevelsData[i]);
+            foreach (var levelData in saveData.LevelsData)
+                _allLevels.First(x => x.LevelData.LevelName == levelData.LevelName).Load(levelData);
         }
 
         public List<LevelData> LevelDatas()
