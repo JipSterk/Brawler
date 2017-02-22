@@ -30,7 +30,6 @@ namespace Brawler.GameSettings
         [SerializeField] private float _soundEffectsVolume;
         [SerializeField] private CharacterOutline _characterOutline;
         [SerializeField] private DamageDisplayLayout _damageDisplayLayout;
-
-        private GraphicsSettings _graphicsSettings;
+        [SerializeField] private GraphicsSettings _graphicsSettings;
     }
 }

@@ -47,13 +47,12 @@ namespace Brawler.Items
 
         private Item GetRandomItem()
         {
-            return _allItems[Random.Range(0, _allItems.Count)];
+            return _allItems.Random();
         }
 
         private Vector3 GetRandomPosition()
         {
-            var spawnPoints = LevelManager.Instance.CurrentLevel.LevelItemSpawnPoints;
-            return spawnPoints[Random.Range(0, spawnPoints.Length)].Position;
+            return LevelManager.Instance.CurrentLevel.LevelItemSpawnPoints.Random().transform.position;
         }
 
         public ItemData GetItemData(string itemName)

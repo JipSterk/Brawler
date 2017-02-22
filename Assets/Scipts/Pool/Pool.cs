@@ -24,8 +24,8 @@ namespace Brawler.Pooling
 
         public void AddToPool(Component component)
         {
-            _components.Add(component);
             component.gameObject.SetActive(false);
+            _components.Add(component);
         }
 
         public Component GetFromPool()

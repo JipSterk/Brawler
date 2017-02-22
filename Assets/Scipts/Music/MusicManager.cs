@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Brawler.SaveLoad;
@@ -58,6 +59,8 @@ namespace Brawler.Music
                 case ClipType.Character:
                     musicClip.Init(_effectAudioSource, _soundEffectsVolume);
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException("musicClip", musicClip, null);
             }
             musicClip.Play();
         }
@@ -74,16 +77,16 @@ namespace Brawler.Music
             _soundEffectsVolume = saveData.Settings.SoundEffectsVolume;
         }
 
-        public MusicClip[] FindClipsByType(ClipType clipType)
-        {
-            return _musicClips.Where(clip => clip.ClipType == clipType).ToArray();
-        }
-
         public MusicClip GetClipAndPlay(string clipName)
         {
             var musicClip = GetMusicClip(clipName);
             PlayClip(musicClip);
             return musicClip;
+        }
+
+        public MusicClip[] FindClipsByType(ClipType clipType)
+        {
+            return _musicClips.Where(x => x.ClipType == clipType).ToArray();
         }
 
         public MusicClip GetMusicClip(string clipName)

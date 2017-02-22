@@ -5,7 +5,7 @@ using Brawler.Pooling;
 
 namespace Brawler.UI
 {
-    public class LevelUiElement : BaseUiElement<Level>
+    public class LevelSelectUiElement : BaseUiElement<Level>
     {
         public override Component Component { get { return this; } }
 
@@ -16,7 +16,7 @@ namespace Brawler.UI
             base.Init(level, callBack);
 
             transform.name = string.Format("Selecting: {0}", Item.LevelData.LevelName);
-            SetText(Item.LevelData.LevelName);
+            Text.text = Item.LevelData.LevelName;
             _image.sprite = level.LevelSprite;
         }
 

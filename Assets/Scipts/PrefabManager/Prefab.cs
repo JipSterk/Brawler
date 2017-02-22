@@ -8,10 +8,10 @@ namespace Brawler.Prefabs
     {
         public string Name { get { return _name; } }
         public string[] Tags { get { return _tags; } }
-        public GameObject GameObject { get { return _gameObject; } }
+        public GameObject Object { get { return _object; } }
 
         [SerializeField] private string _name;
-        [SerializeField] private GameObject _gameObject;
+        [SerializeField] private GameObject _object;
         [SerializeField] private string[] _tags;
     }
 }

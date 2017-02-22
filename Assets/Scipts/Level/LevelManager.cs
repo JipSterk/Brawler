@@ -67,7 +67,7 @@ namespace Brawler.LevelManagment
 
         public Level GetRandomLevel()
         {
-            return _allLevels[Random.Range(0, _allLevels.Count)];
+            return _allLevels.Random();
         }
 
         public Level GetLevel(string levelName)

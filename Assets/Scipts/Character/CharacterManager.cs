@@ -10,6 +10,7 @@ namespace Brawler.Characters
     public class CharacterManager : MonoBehaviour
     {
         public static CharacterManager Instance { get { return _instance ?? new GameObject("Character Manager").AddComponent<CharacterManager>(); } }
+        public List<Character> AllCharacters { get { return _allCharacters; } }
 
         [SerializeField] private List<Character> _allCharacters = new List<Character>();
 
@@ -35,19 +36,19 @@ namespace Brawler.Characters
 
         public void InstantiateCharacter(Character character, PlayerControlsProfile playerControlsProfile, LevelSpawnPoint levelSpawnPoint)
         {
-            var tempCharacter = Instantiate(character, levelSpawnPoint.Position, Quaternion.identity, levelSpawnPoint.transform);
+            var tempCharacter = Instantiate(character, levelSpawnPoint.transform.position, Quaternion.identity, levelSpawnPoint.transform);
             tempCharacter.Init(playerControlsProfile, _settingsManager.Settings.CharacterOutline);
         }
 
         public void InstantiateRandomCharacter(PlayerControlsProfile playerControlsProfile, LevelSpawnPoint levelSpawnPoint)
         {
-            var tempCharacter = Instantiate(GetRandomCharacter(), levelSpawnPoint.Position, Quaternion.identity, levelSpawnPoint.transform);
+            var tempCharacter = Instantiate(GetRandomCharacter(), levelSpawnPoint.transform.position, Quaternion.identity, levelSpawnPoint.transform);
             tempCharacter.Init(playerControlsProfile, _settingsManager.Settings.CharacterOutline);
         }
 
         private Character GetRandomCharacter()
         {
-            return _allCharacters[Random.Range(0, _allCharacters.Count)];
+            return _allCharacters.Random();
         }
 
         public List<Character> UnlockedCharacters()

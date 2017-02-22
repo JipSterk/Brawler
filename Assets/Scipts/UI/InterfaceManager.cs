@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Brawler.Characters;
@@ -16,19 +17,18 @@ namespace Brawler.UI
 {
     public class InterfaceManager : MonoBehaviour
     {
-        public Transform InterfaceCanvasTransform { get { return _interfaceCanvasTransform; } }
         public InterfaceMenu[] InterfaceMenus { get { return _interfaceMenus; } }
         public static InterfaceManager Instance { get { return _instance ?? new GameObject("Interface Manager").AddComponent<InterfaceManager>(); } }
 
         [SerializeField] private CountryInfoManager _countryInfoManager;
-        [SerializeField] private CharacterSelectUiElement _characterSelectUiElementPrefab;
         [SerializeField] private CharacterUiElement _characterUiElementPrefab;
-        [SerializeField] private LevelUiElement _levelUiElementPrefab;
+        [SerializeField] private LevelSelectUiElement _levelSelectUiElementPrefab;
         [SerializeField] private PlayerProfileUiElement _playerProfileUiPrefab;
         [SerializeField] private InputField _matchNameInputField;
         [SerializeField] private InputField _matchPasswordInputField;
         [SerializeField] private InputField _newProfileNameInputField;
         [SerializeField] private Button _quitButton;
+        [SerializeField] private Button _newPlayerProfileButton;
         [SerializeField] private Image _avatarImage;
         [SerializeField] private Image _countyImage;
         [SerializeField] private Text _outputText;
@@ -40,7 +40,7 @@ namespace Brawler.UI
         [SerializeField] private Transform _levelElementParent;
         [SerializeField] private Transform _roomListParent;
         [SerializeField] private Transform _playerProfileParent;
-        [SerializeField] private Transform _interfaceCanvasTransform;
+        [SerializeField] private GridLayoutGroup _characterSelectGridLayout;
         [SerializeField] private InterfaceMenu[] _interfaceMenus;
 
         private static InterfaceManager _instance;
@@ -48,7 +48,8 @@ namespace Brawler.UI
         private GameManager _gameManager;
         private PlayerControlManager _playerControlManager;
         private CustomNetworkManager _customNetworkManager;
-        
+        private CharacterItemUiElement[] _characterSelectElements;
+
         private void Awake()
         {
             if (_instance)
@@ -71,17 +72,20 @@ namespace Brawler.UI
             _interfaceScreens = _interfaceMenus.Select(x => x.gameObject).ToArray();
 
             _newProfileNameInputField.onEndEdit.AddListener(NamePlayerProfile);
+            //_newPlayerProfileButton.onClick.AddListener();
             _quitButton.onClick.AddListener(Quit);
 
+            _characterSelectElements = FindObjectsOfType<CharacterItemUiElement>();
+            
             var uiButtons = Resources.FindObjectsOfTypeAll<UiButton>();
-            CallBack<MenuState> callback = GameManager.Instance.UpdateMenuState;
+            CallBack<MenuState> callback = _gameManager.UpdateMenuState;
             foreach (var interfaceMenu in _interfaceMenus)
                 interfaceMenu.Init(uiButtons, callback);
         }
 
         private void UpdateMenuUi(MenuState menuState)
         {
-            UpdateUiPanels(InterfaceMenus.First(menu => menu.MenuState == menuState));
+            UpdateUiPanels(InterfaceMenus.First(x => x.MenuState == menuState));
 
             switch (menuState)
             {
@@ -99,14 +103,14 @@ namespace Brawler.UI
                 case MenuState.OnlineMultiplayer:
                     break;
                 case MenuState.CharacterSelection:
-                    var unlockedCharacters = CharacterManager.Instance.UnlockedCharacters();
-                    _characterElementParent.ToggleAllChilderen(false);
-                    unlockedCharacters.InstantiateAllElements(SelectCharacter, _characterSelectUiElementPrefab, _characterElementParent);
+                    var allCharacters = CharacterManager.Instance.AllCharacters;
+
+                    for (var i = _characterSelectElements.Length - 1; i >= 0; i--)
+                        _characterSelectElements[i].Init(allCharacters[i], SelectCharacter);
                     break;
                 case MenuState.LevelSelection:
                     var unlockedLevels = LevelManager.Instance.UnlockedLevels();
-                    _levelElementParent.ToggleAllChilderen(false);
-                    unlockedLevels.InstantiateAllElements(_gameManager.StartMatch, _levelUiElementPrefab, _levelElementParent);
+                    unlockedLevels.InstantiateAllElements(_gameManager.StartMatch, _levelSelectUiElementPrefab, _levelElementParent);
                     break;
                 case MenuState.MatchRules:
                     break;
@@ -114,7 +118,6 @@ namespace Brawler.UI
                     break;
                 case MenuState.PlayerInput:
                     var playerControlsProfiles = PlayerControlManager.Instance.PlayerControlsProfiles;
-                    _playerProfileParent.ToggleAllChilderen(false);
                     playerControlsProfiles.InstantiateAllElements(LoadProfile, _playerProfileUiPrefab, _playerProfileParent);
                     break;
                 case MenuState.SoundSettings:
@@ -132,7 +135,7 @@ namespace Brawler.UI
 
         private void LoadProfile(PlayerControlsProfile playerControlsProfile)
         {
-            Debug.Log("Loaded profile: " + playerControlsProfile.ProfileName);
+            Debug.LogFormat("Loaded profile: {0}", playerControlsProfile.ProfileName);
         }
 
         private void SelectCharacter(Character character)

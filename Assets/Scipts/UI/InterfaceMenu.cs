@@ -25,7 +25,7 @@ namespace Brawler.UI
             _eventSystem = EventSystem.current;
             _joystick1LeftHorizontal = new JoyStickAxis(_joyStickAxises);
 
-            foreach (var button in uiButtons.Where(uiButton => uiButton.MenuState == _menuState))
+            foreach (var button in uiButtons.Where(x => x.MenuState == _menuState))
                 button.Init(callBack);
         }
 

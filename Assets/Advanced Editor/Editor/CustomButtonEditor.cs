@@ -15,10 +15,10 @@ namespace Brawler.AdvacedEditor
         [SerializeField] private int _fontSize = 28;
         [SerializeField] private Sprite _sprite;
 
-        [MenuItem("Brawler/Create Button")]
+        [MenuItem("Brawler/Create BaseButton")]
         private static void CreateWizard()
         {
-            DisplayWizard<CustomButtonEditor>("New Button", "Create");
+            DisplayWizard<CustomButtonEditor>("New BaseButton", "Create");
         }
 
         private void OnWizardCreate()
@@ -36,7 +36,7 @@ namespace Brawler.AdvacedEditor
             var uibutton = uiButton.AddComponent<UiButton>();
             uibutton.MenuState = _menuState;
 
-            var button = new GameObject("Button");
+            var button = new GameObject("BaseButton");
             button.transform.SetParent(uiButton.transform);
 
             var buttonRect = button.AddComponent<RectTransform>();

@@ -1,5 +1,8 @@
 ﻿#define USE_GS_AUTH_API
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Steamworks;
 using UnityEngine;
 
@@ -9,8 +12,7 @@ namespace Brawler.Networking
     {
         public static CustomNetworkManager Instance { get { return _instance ?? new GameObject("NetworkManager").AddComponent<CustomNetworkManager>(); } }
         public bool ConnectedToSteam { get { return _connectedToSteam; } }
-
-
+        
         private static CustomNetworkManager _instance;
         private Callback<SteamServersConnected_t> _callbackSteamServersConnected;
         private Callback<SteamServerConnectFailure_t> _callbackSteamServersConnectFailure;
@@ -19,6 +21,10 @@ namespace Brawler.Networking
         private Callback<ValidateAuthTicketResponse_t> _callbackGsAuthTicketResponse;
         private Callback<P2PSessionRequest_t> _callbackP2PSessionRequest;
         private Callback<P2PSessionConnectFail_t> _callbackP2PSessionConnectFail;
+        private Callback<LobbyCreated_t> _callbackLobbyCreated;
+        private Callback<LobbyMatchList_t> _callbackLobbyList;
+        private Callback<LobbyEnter_t> _callbackLobbyEnter;
+        private Callback<LobbyDataUpdate_t> _callbackLobbyInfo;
         private const string BrawlerServerVersion = "1.0.0.0";
         private const ushort BrawlerAuthenticationPort = 8766;
         private const ushort BrawlerServerPort = 27015;
@@ -28,7 +34,9 @@ namespace Brawler.Networking
         private string _serverName = "Test Server";
         private string _mapName = "Test Map";
         private int _maxPlayers = 2;
-        
+        private List<CSteamID> _lobbies = new List<CSteamID>();
+        private ulong _currentLobbyId;
+
         private void Awake()
         {
             if (_instance)
@@ -50,6 +58,11 @@ namespace Brawler.Networking
             _callbackGsAuthTicketResponse = Callback<ValidateAuthTicketResponse_t>.CreateGameServer(OnValidateAuthTicketResponse);
             _callbackP2PSessionRequest = Callback<P2PSessionRequest_t>.CreateGameServer(OnP2PSessionRequest);
             _callbackP2PSessionConnectFail = Callback<P2PSessionConnectFail_t>.CreateGameServer(OnP2PSessionConnectFail);
+            _callbackLobbyCreated = Callback<LobbyCreated_t>.Create(OnLobbyCreated);
+            _callbackLobbyList = Callback<LobbyMatchList_t>.Create(OnLobbiesList);
+            _callbackLobbyEnter = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
+            _callbackLobbyInfo = Callback<LobbyDataUpdate_t>.Create(OnGetLobbyInfo);
+
 
             _initialized = false;
             _connectedToSteam = false;
@@ -105,14 +118,14 @@ namespace Brawler.Networking
 
         private void OnSteamServersConnectFailure(SteamServerConnectFailure_t connectFailure)
         {
-            _connectedToSteam = false;
             Debug.Log("BrawlerServer failed to connect to Steam");
+            _connectedToSteam = false;
         }
 
         private void OnSteamServersDisconnected(SteamServersDisconnected_t loggedOff)
         {
-            _connectedToSteam = false;
             Debug.Log("BrawlerServer got logged out of Steam");
+            _connectedToSteam = false;
         }
 
         private void OnPolicyResponse(GSPolicyResponse_t policyResponse)
@@ -144,6 +157,33 @@ namespace Brawler.Networking
             SteamGameServer.SetPasswordProtected(false);
             SteamGameServer.SetServerName(_serverName);
             SteamGameServer.SetMapName(_mapName);
+        }
+
+        private void OnLobbiesList(LobbyMatchList_t lobbyMatchList)
+        {
+            for (var i = 0; i < lobbyMatchList.m_nLobbiesMatching; i++)
+            {
+                var lobbyId = SteamMatchmaking.GetLobbyByIndex(i);
+                _lobbies.Add(lobbyId);
+                SteamMatchmaking.RequestLobbyData(lobbyId);
+            }
+        }
+
+        private void OnGetLobbyInfo(LobbyDataUpdate_t lobbyDataUpdate)
+        {
+            Debug.LogFormat("Lobby: {1}", SteamMatchmaking.GetLobbyData(_lobbies.First(x => x.m_SteamID == lobbyDataUpdate.m_ulSteamIDLobby), "Name"));
+        }
+
+        private void OnLobbyEntered(LobbyEnter_t lobbyEnter)
+        {
+            _currentLobbyId = lobbyEnter.m_ulSteamIDLobby;
+        }
+
+        private void OnLobbyCreated(LobbyCreated_t lobbyCreated)
+        {
+            Debug.LogFormat("Lobby Created {0}", lobbyCreated.m_eResult);
+            SteamMatchmaking.SetLobbyData((CSteamID) lobbyCreated.m_ulSteamIDLobby, "Name", string.Format("{0}'s game", SteamFriends.GetPersonaName()));
+            //SteamMatchmaking.SetLobbyData((CSteamID)lobbyCreated.m_ulSteamIDLobby, "CurrentSize", string.Format("", SteamMatchmaking.getlobb))
         }
     }
 }

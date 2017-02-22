@@ -52,9 +52,10 @@ namespace Brawler.GameSettings
 
         private void Start()
         {
-            _announcer = GetComponent<Announcer>();
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+
+            _announcer = GetComponent<Announcer>();
 
             SaveLoadManager.Instance.WhenSaveFileExist += LoadPlayerOnlineInfo;
             _matchSettings = _defaultMatchSettings;

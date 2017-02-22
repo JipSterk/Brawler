@@ -17,12 +17,12 @@ namespace Brawler.UI
 
             transform.name = string.Format("{0} UIProfile", Item.CharacterInfo.CharacterName);
             _characterImage.sprite = Item.CharacterPortrait;
-            Item.OnCharacterDamage += UpdateCharacterInfoUi;
+            Item.OnCharacterDamage.Register(UpdateCharacterInfoUi);
         }
         
         private void UpdateCharacterInfoUi(float procent)
         {
-            SetText(string.Format("{0:P}", procent));
+            Text.text = string.Format("{0:P}", procent);
         }
         
         public override void OnDisable()

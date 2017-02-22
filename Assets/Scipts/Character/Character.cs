@@ -3,6 +3,7 @@ using System.Collections;
 using Brawler.CustomInput;
 using Brawler.GameSettings;
 using Brawler.LevelManagment;
+using Steamworks;
 
 namespace Brawler.Characters
 {
@@ -13,8 +14,9 @@ namespace Brawler.Characters
         public CharacterInfo CharacterInfo { get { return _characterInfo; } }
         public CharacterStats CharacterStats { get { return _characterStats; } }
         public CharacterClips CharacterClips { get { return _characterClips; } }
+        public Callback<float> OnCharacterDamage { get { return _onCharacterDamage; } }
 
-        public event CallBack<float> OnCharacterDamage;
+        private Callback<float> _onCharacterDamage;
 
         [SerializeField] private Sprite _characterPortrait;
         [SerializeField] private TextMesh _textMesh;
@@ -59,6 +61,8 @@ namespace Brawler.Characters
             _levelManager = LevelManager.Instance;
             _gameManager = GameManager.Instance;
             _locomotionId = Animator.StringToHash("Base Layer.Locomotion");
+
+            _onCharacterDamage = Callback<float>.Create(TakeDamage);
         }
 
         public void Init(PlayerControlsProfile playerControlsProfile, CharacterOutline characterOutline)
@@ -106,8 +110,6 @@ namespace Brawler.Characters
             _animatorTransitionInfo = _animator.GetAnimatorTransitionInfo(0);
 
             MoveCharacter(new Vector2(_leftHorizontal, _leftVertical));
-
-            //todo make it so if _characterInfo goes offscreen it adds damage
         }
         
         private void MoveCharacter(Vector2 stickInput)
@@ -122,15 +124,12 @@ namespace Brawler.Characters
             _rigidbody.velocity = new Vector3(stickInput.x, _rigidbody.velocity.y);
         }
         
-        public void TakeDamage(float amount)
+        private void TakeDamage(float amount)
         {
             if (!_isInScene)
                 return;
 
             _health -= amount;
-
-            if (OnCharacterDamage != null)
-                OnCharacterDamage(amount);
         }
 
         public IEnumerator Respawn()
@@ -145,7 +144,7 @@ namespace Brawler.Characters
         {
             _health = 0;
             _isInScene = true;
-            transform.position = _levelManager.CurrentLevel.RespawnPoint.Position;
+            //transform.position = _levelManager.CurrentLevel.RespawnPoint.transform.position;
         }
 
         private float GetCharacterSpeed()
@@ -215,6 +214,11 @@ namespace Brawler.Characters
         public void Taunt()
         {
             Debug.Log("Taunt");
+        }
+
+        private void OnDisable()
+        {
+            _onCharacterDamage.Unregister();
         }
     }
 }

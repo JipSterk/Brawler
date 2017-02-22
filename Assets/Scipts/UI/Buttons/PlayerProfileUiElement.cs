@@ -13,7 +13,7 @@ namespace Brawler.UI
             base.Init(playerControlsProfile, callBack);
 
             transform.name = string.Format("Selecting: {0}", Item.ProfileName);
-            SetText(Item.ProfileName);
+            Text.text = Item.ProfileName;
         }
 
         public override void OnDisable()
