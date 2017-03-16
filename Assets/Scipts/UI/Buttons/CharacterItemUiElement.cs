@@ -13,21 +13,21 @@ namespace Brawler.UI
 
         [SerializeField] private Image _image;
 
-        private MusicManager _musicManager;
-
-        public override void Init(Character character, CallBack<Character> callBack)
+        private void Start()
         {
-            base.Init(character, callBack);
+            BaseButton.OnPointerEnterCallback += OnPointerEnter;
+            BaseButton.OnPointerExitCallback += OnPointerExit;
+            BaseButton.OnPointerClickCallback += OnPointerClick;
+        }
+
+        public override void Init(Character character, Callback<Character> callback)
+        {
+            base.Init(character, callback);
 
             transform.name = string.Format("Selecting: {0}", Item.CharacterInfo.CharacterName);
+
             Text.text = Item.CharacterInfo.CharacterName;
             _image.sprite = character.CharacterPortrait;
-
-            _musicManager = MusicManager.Instance;
-
-            BaseButton.OnPointerEnterCallBack += OnPointerEnter;
-            BaseButton.OnPointerExitCallBack += OnPointerExit;
-            BaseButton.OnPointerClickCallBack += OnPointerClick;
         }
 
         private void OnPointerExit(PointerEventData pointerEventData)
@@ -42,7 +42,7 @@ namespace Brawler.UI
 
         private void OnPointerClick(BaseEventData baseEventData)
         {
-            _musicManager.PlayClip(Item.CharacterClips.SelectSound);
+            MusicManager.Instance.PlayClip(Item.CharacterClips.SelectSound);
         }
 
         public override void OnDisable()

@@ -9,7 +9,7 @@ namespace Brawler.Characters
         public float WalkSpeed { get { return _walkSpeed; } }
         public float SprintSpeed { get { return _sprintSpeed; } }
         public float CrouchSpeed { get { return _crouchSpeed; } }
-        public int Heatlth { get { return _health; } }
+        public int Health { get { return _health; } }
         public float Weight { get { return _weight; } }
 
         [SerializeField] private float _walkSpeed;

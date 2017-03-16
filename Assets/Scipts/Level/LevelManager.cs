@@ -9,11 +9,11 @@ namespace Brawler.LevelManagment
 {
     public class LevelManager : MonoBehaviour
     {
-        public static LevelManager Instance { get { return _instance; } }
+        public static LevelManager Instance { get { return _instance ?? new GameObject("Level Manager").AddComponent<LevelManager>(); } }
         public List<Level> AllLevels { get { return _allLevels; } }
         public Level CurrentLevel { get { return _currentLevel; } }
 
-        public event CallBack<Level> OnLevelWasLoaded;
+        public event Callback<Level> OnLevelWasLoaded;
 
         [SerializeField] private List<Level> _allLevels = new List<Level>();
 
@@ -31,20 +31,21 @@ namespace Brawler.LevelManagment
             _instance = this;
             DontDestroyOnLoad(gameObject);
         }
-
-        public void Start()
+        
+        private void Start()
         {
             SaveLoadManager.Instance.WhenSaveFileExist += LoadLevelsData;
         }
         
         public IEnumerator LoadLevelAsync(Level level)
         {
-            _currentLevel = level;
-            var loadSceneAsync = SceneManager.LoadSceneAsync(_currentLevel.Scene.name);
+            var loadSceneAsync = SceneManager.LoadSceneAsync(level.Scene.name, level.LoadSceneMode);
 
             while (!loadSceneAsync.isDone)
                 yield return null;
-            
+
+            _currentLevel = level;
+
             if (OnLevelWasLoaded != null)
                 OnLevelWasLoaded(_currentLevel);
         }

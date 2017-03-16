@@ -14,17 +14,17 @@ namespace Brawler.Networking
         public bool ConnectedToSteam { get { return _connectedToSteam; } }
         
         private static CustomNetworkManager _instance;
-        private Callback<SteamServersConnected_t> _callbackSteamServersConnected;
-        private Callback<SteamServerConnectFailure_t> _callbackSteamServersConnectFailure;
-        private Callback<SteamServersDisconnected_t> _callbackSteamServersDisconnected;
-        private Callback<GSPolicyResponse_t> _callbackPolicyResponse;
-        private Callback<ValidateAuthTicketResponse_t> _callbackGsAuthTicketResponse;
-        private Callback<P2PSessionRequest_t> _callbackP2PSessionRequest;
-        private Callback<P2PSessionConnectFail_t> _callbackP2PSessionConnectFail;
-        private Callback<LobbyCreated_t> _callbackLobbyCreated;
-        private Callback<LobbyMatchList_t> _callbackLobbyList;
-        private Callback<LobbyEnter_t> _callbackLobbyEnter;
-        private Callback<LobbyDataUpdate_t> _callbackLobbyInfo;
+        private Steamworks.Callback<SteamServersConnected_t> _callbackSteamServersConnected;
+        private Steamworks.Callback<SteamServerConnectFailure_t> _callbackSteamServersConnectFailure;
+        private Steamworks.Callback<SteamServersDisconnected_t> _callbackSteamServersDisconnected;
+        private Steamworks.Callback<GSPolicyResponse_t> _callbackPolicyResponse;
+        private Steamworks.Callback<ValidateAuthTicketResponse_t> _callbackGsAuthTicketResponse;
+        private Steamworks.Callback<P2PSessionRequest_t> _callbackP2PSessionRequest;
+        private Steamworks.Callback<P2PSessionConnectFail_t> _callbackP2PSessionConnectFail;
+        private Steamworks.Callback<LobbyCreated_t> _callbackLobbyCreated;
+        private Steamworks.Callback<LobbyMatchList_t> _callbackLobbyList;
+        private Steamworks.Callback<LobbyEnter_t> _callbackLobbyEnter;
+        private Steamworks.Callback<LobbyDataUpdate_t> _callbackLobbyInfo;
         private const string BrawlerServerVersion = "1.0.0.0";
         private const ushort BrawlerAuthenticationPort = 8766;
         private const ushort BrawlerServerPort = 27015;
@@ -51,17 +51,17 @@ namespace Brawler.Networking
 
         private void Start()
         {
-            _callbackSteamServersConnected = Callback<SteamServersConnected_t>.CreateGameServer(OnSteamServersConnected);
-            _callbackSteamServersConnectFailure = Callback<SteamServerConnectFailure_t>.CreateGameServer(OnSteamServersConnectFailure);
-            _callbackSteamServersDisconnected = Callback<SteamServersDisconnected_t>.CreateGameServer(OnSteamServersDisconnected);
-            _callbackPolicyResponse = Callback<GSPolicyResponse_t>.CreateGameServer(OnPolicyResponse);
-            _callbackGsAuthTicketResponse = Callback<ValidateAuthTicketResponse_t>.CreateGameServer(OnValidateAuthTicketResponse);
-            _callbackP2PSessionRequest = Callback<P2PSessionRequest_t>.CreateGameServer(OnP2PSessionRequest);
-            _callbackP2PSessionConnectFail = Callback<P2PSessionConnectFail_t>.CreateGameServer(OnP2PSessionConnectFail);
-            _callbackLobbyCreated = Callback<LobbyCreated_t>.Create(OnLobbyCreated);
-            _callbackLobbyList = Callback<LobbyMatchList_t>.Create(OnLobbiesList);
-            _callbackLobbyEnter = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
-            _callbackLobbyInfo = Callback<LobbyDataUpdate_t>.Create(OnGetLobbyInfo);
+            _callbackSteamServersConnected = Steamworks.Callback<SteamServersConnected_t>.CreateGameServer(OnSteamServersConnected);
+            _callbackSteamServersConnectFailure = Steamworks.Callback<SteamServerConnectFailure_t>.CreateGameServer(OnSteamServersConnectFailure);
+            _callbackSteamServersDisconnected = Steamworks.Callback<SteamServersDisconnected_t>.CreateGameServer(OnSteamServersDisconnected);
+            _callbackPolicyResponse = Steamworks.Callback<GSPolicyResponse_t>.CreateGameServer(OnPolicyResponse);
+            _callbackGsAuthTicketResponse = Steamworks.Callback<ValidateAuthTicketResponse_t>.CreateGameServer(OnValidateAuthTicketResponse);
+            _callbackP2PSessionRequest = Steamworks.Callback<P2PSessionRequest_t>.CreateGameServer(OnP2PSessionRequest);
+            _callbackP2PSessionConnectFail = Steamworks.Callback<P2PSessionConnectFail_t>.CreateGameServer(OnP2PSessionConnectFail);
+            _callbackLobbyCreated = Steamworks.Callback<LobbyCreated_t>.Create(OnLobbyCreated);
+            _callbackLobbyList = Steamworks.Callback<LobbyMatchList_t>.Create(OnLobbiesList);
+            _callbackLobbyEnter = Steamworks.Callback<LobbyEnter_t>.Create(OnLobbyEntered);
+            _callbackLobbyInfo = Steamworks.Callback<LobbyDataUpdate_t>.Create(OnGetLobbyInfo);
 
 
             _initialized = false;
@@ -182,7 +182,7 @@ namespace Brawler.Networking
         private void OnLobbyCreated(LobbyCreated_t lobbyCreated)
         {
             Debug.LogFormat("Lobby Created {0}", lobbyCreated.m_eResult);
-            SteamMatchmaking.SetLobbyData((CSteamID) lobbyCreated.m_ulSteamIDLobby, "Name", string.Format("{0}'s game", SteamFriends.GetPersonaName()));
+            //SteamMatchmaking.SetLobbyData((CSteamID) lobbyCreated.m_ulSteamIDLobby, "Name", string.Format("{0}'s game", SteamFriends.GetPersonaName()));
             //SteamMatchmaking.SetLobbyData((CSteamID)lobbyCreated.m_ulSteamIDLobby, "CurrentSize", string.Format("", SteamMatchmaking.getlobb))
         }
     }

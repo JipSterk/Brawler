@@ -141,7 +141,7 @@ namespace Steamworks {
 		/// <para> notification with a matching nCallbackContext parameter. This API is insecure, and could</para>
 		/// <para> be abused by hacked clients. It is, however, very useful as a development cheat or as</para>
 		/// <para> a means of prototyping item-related features for your game. The use of GenerateItems can</para>
-		/// <para> be restricted to certain item definitions or fully blocked via the Steamworks website.</para>
+		/// <para> be restricted to certain item definitions or fully blocked via the SteamworksLudo website.</para>
 		/// <para> If punArrayQuantity is not NULL, it should be the same length as pArrayItems and should</para>
 		/// <para> describe the quantity of each item to generate.</para>
 		/// </summary>
@@ -183,7 +183,7 @@ namespace Steamworks {
 		/// <para> UI confirmation process is highly recommended. Similar to GenerateItems, punArrayQuantity</para>
 		/// <para> can be NULL or else an array of the same length as pArrayItems which describe the quantity</para>
 		/// <para> of each item to destroy. ConsumeItem can be restricted to certain item definitions or</para>
-		/// <para> fully blocked via the Steamworks website to minimize support/abuse issues such as the</para>
+		/// <para> fully blocked via the SteamworksLudo website to minimize support/abuse issues such as the</para>
 		/// <para> clasic "my brother borrowed my laptop and deleted all of my rare items".</para>
 		/// </summary>
 		public static bool ConsumeItem(out SteamInventoryResult_t pResultHandle, SteamItemInstanceID_t itemConsume, uint unQuantity) {
@@ -196,7 +196,7 @@ namespace Steamworks {
 		/// <para> used to implement crafting recipes or transmutations, or items which unpack themselves</para>
 		/// <para> into other items. Like GenerateItems, this is a flexible and dangerous API which is</para>
 		/// <para> meant for rapid prototyping. You can configure restrictions on ExchangeItems via the</para>
-		/// <para> Steamworks website, such as limiting it to a whitelist of input/output combinations</para>
+		/// <para> SteamworksLudo website, such as limiting it to a whitelist of input/output combinations</para>
 		/// <para> corresponding to recipes.</para>
 		/// <para> (Note: although GenerateItems may be hard or impossible to use securely in your game,</para>
 		/// <para> ExchangeItems is perfectly reasonable to use once the whitelists are set accordingly.)</para>
@@ -230,7 +230,7 @@ namespace Steamworks {
 		/// <para> a pre-game launcher window. (If you are stingy with handing out playtime credit, it</para>
 		/// <para> will only encourage players to run bots or use mouse/kb event simulators.)</para>
 		/// <para> Playtime credit accumulation can be capped on a daily or weekly basis through your</para>
-		/// <para> Steamworks configuration.</para>
+		/// <para> SteamworksLudo configuration.</para>
 		/// </summary>
 		public static void SendItemDropHeartbeat() {
 			InteropHelp.TestIfAvailableClient();
@@ -289,7 +289,7 @@ namespace Steamworks {
 
 		/// <summary>
 		/// <para> GetItemDefinitionIDs returns the set of all defined item definition IDs (which are</para>
-		/// <para> defined via Steamworks configuration, and not necessarily contiguous integers).</para>
+		/// <para> defined via SteamworksLudo configuration, and not necessarily contiguous integers).</para>
 		/// <para> If pItemDefIDs is null, the call will return true and *punItemDefIDsArraySize will</para>
 		/// <para> contain the total size necessary for a subsequent call. Otherwise, the call will</para>
 		/// <para> return false if and only if there is not enough space in the output array.</para>

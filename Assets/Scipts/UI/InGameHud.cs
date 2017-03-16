@@ -2,7 +2,6 @@
 using System.Globalization;
 using Brawler.GameManagement;
 using Brawler.GameSettings;
-using Brawler.Items;
 using Brawler.LevelManagment;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,7 +23,7 @@ namespace Brawler.UI
             _gameManager.OnMatchStart += Init;
         }
 
-        private void Init(GamePlayer p1GamePlayer, GamePlayer p2GamePlayer, List<Item> items, Level level, MatchSettings matchSettings)
+        private void Init(GamePlayer p1GamePlayer, GamePlayer p2GamePlayer, Level level, MatchSettings matchSettings)
         {
             _gameTime = matchSettings.GameTime;
             _text.text = _gameTime.ToString(CultureInfo.InvariantCulture);
@@ -41,8 +40,7 @@ namespace Brawler.UI
             if(_gameManager.MenuState != MenuState.OfflineMultiplayer) 
                 return;
 
-            _gameTime -= Time.deltaTime;
-            _text.text = _gameTime.ToString("F0");
+            _text.text = (_gameTime -= Time.deltaTime).ToString("F0");
         }
 
         private void UpdateP1(float health)

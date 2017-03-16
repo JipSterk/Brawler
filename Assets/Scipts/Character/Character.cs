@@ -3,20 +3,17 @@ using System.Collections;
 using Brawler.CustomInput;
 using Brawler.GameSettings;
 using Brawler.LevelManagment;
-using Steamworks;
 
 namespace Brawler.Characters
 {
     public class Character : MonoBehaviour
     {
-        public int CurrentStock { get { return _currentStock; } }
         public Sprite CharacterPortrait { get { return _characterPortrait; } }
         public CharacterInfo CharacterInfo { get { return _characterInfo; } }
         public CharacterStats CharacterStats { get { return _characterStats; } }
         public CharacterClips CharacterClips { get { return _characterClips; } }
-        public Callback<float> OnCharacterDamage { get { return _onCharacterDamage; } }
 
-        private Callback<float> _onCharacterDamage;
+        public event Callback<float> OnCharacterDamage;
 
         [SerializeField] private Sprite _characterPortrait;
         [SerializeField] private TextMesh _textMesh;
@@ -44,8 +41,7 @@ namespace Brawler.Characters
         private float _leftTrigger;
         private float _rightTrigger;
         private float _health;
-        private int _currentStock;
-        private bool _isInScene;
+        private bool _isNockedOut;
         
         private int _locomotionId;
         private LevelManager _levelManager;
@@ -56,13 +52,9 @@ namespace Brawler.Characters
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponent<Animator>();
 
-            Debug.LogWarning("Todo Setup Sting hashes for animation");
-
             _levelManager = LevelManager.Instance;
             _gameManager = GameManager.Instance;
             _locomotionId = Animator.StringToHash("Base Layer.Locomotion");
-
-            _onCharacterDamage = Callback<float>.Create(TakeDamage);
         }
 
         public void Init(PlayerControlsProfile playerControlsProfile, CharacterOutline characterOutline)
@@ -73,8 +65,7 @@ namespace Brawler.Characters
             _textMesh.text = _playerControlsProfile.ProfileName;
             
             transform.name = _characterInfo.CharacterName;
-            _health = _characterStats.Heatlth;
-            _currentStock = _gameManager.MatchSettings.Stock;
+            _health = _characterStats.Health;
         }
 
         public void Update()
@@ -106,54 +97,38 @@ namespace Brawler.Characters
             if (_rightTrigger > _rightTriggerThresHold)
                 Grab();
 
-            _animatorStateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-            _animatorTransitionInfo = _animator.GetAnimatorTransitionInfo(0);
+            //_animatorStateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+            //_animatorTransitionInfo = _animator.GetAnimatorTransitionInfo(0);
 
             MoveCharacter(new Vector2(_leftHorizontal, _leftVertical));
         }
         
         private void MoveCharacter(Vector2 stickInput)
         {
-            var speed = GetCharacterSpeed();
-
             if (stickInput.magnitude < _deadZone)
                 stickInput = Vector2.zero;
             else
-                stickInput = stickInput.normalized * ((stickInput.magnitude - _deadZone) / (1 - _deadZone)) * speed;
+                stickInput = stickInput.normalized * ((stickInput.magnitude - _deadZone) / (1 - _deadZone)) * _characterStats.WalkSpeed;
 
             _rigidbody.velocity = new Vector3(stickInput.x, _rigidbody.velocity.y);
         }
         
-        private void TakeDamage(float amount)
+        public void TakeDamage(float amount)
         {
-            if (!_isInScene)
+            if (!_isNockedOut)
                 return;
 
             _health -= amount;
-        }
 
-        public IEnumerator Respawn()
-        {
-            Debug.LogFormat("Character: {0} is respawning", _characterInfo.CharacterName);
-            yield return new WaitForSeconds(_gameManager.MatchSettings.RespawnTime);
-            _currentStock--;
-            SetDefaults();
+            if (OnCharacterDamage != null)
+                OnCharacterDamage(_health);
         }
-
-        private void SetDefaults()
+        
+        public void SetDefaults(Vector3 startPosition)
         {
             _health = 0;
-            _isInScene = true;
-            //transform.position = _levelManager.CurrentLevel.RespawnPoint.transform.position;
-        }
-
-        private float GetCharacterSpeed()
-        {
-            var speed = _characterStats.WalkSpeed;
-            if (IsCrouch()) speed *= _characterStats.CrouchSpeed;
-            if (IsSprint()) speed *= _characterStats.SprintSpeed;
-            
-            return speed;
+            _isNockedOut = true;
+            transform.position = startPosition;
         }
 
         private bool IsInJump()
@@ -214,11 +189,6 @@ namespace Brawler.Characters
         public void Taunt()
         {
             Debug.Log("Taunt");
-        }
-
-        private void OnDisable()
-        {
-            _onCharacterDamage.Unregister();
         }
     }
 }

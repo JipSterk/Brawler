@@ -7,11 +7,11 @@ namespace Brawler.Prefabs
     public struct Prefab
     {
         public string Name { get { return _name; } }
+        public GameObject GameObject { get { return _gameObject; } }
         public string[] Tags { get { return _tags; } }
-        public GameObject Object { get { return _object; } }
 
         [SerializeField] private string _name;
-        [SerializeField] private GameObject _object;
+        [SerializeField] private GameObject _gameObject;
         [SerializeField] private string[] _tags;
     }
 }

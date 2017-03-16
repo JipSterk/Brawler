@@ -3,7 +3,6 @@ using Brawler.Characters;
 using Brawler.CustomInput;
 using Brawler.GameManagement;
 using Brawler.GameSettings;
-using Brawler.Music;
 using Brawler.Pooling;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,18 +20,21 @@ namespace Brawler.UI
         private PlayerControlsProfile _playerControlsProfile;
         private PlayerControlManager _playerControlManager;
 
-        public override void Init(Character character, CallBack<Character> callBack)
+        private void Start()
         {
-            callBack += UpdateCharacter;
-            base.Init(character, callBack);
-
             _playerControlManager = PlayerControlManager.Instance;
+            _playerProfileDropdown.onValueChanged.AddListener(UpdatePlayerControlsProfile);
+            //BaseButton.onClick.AddListener(() => UpdateCharacter(Item));
+        }
 
+        public override void Init(Character character, Callback<Character> callback)
+        {
+            base.Init(character, callback);
+            
             var playerProfiles = _playerControlManager.PlayerControlsProfiles;
             _playerProfileDropdown.AddOptions(playerProfiles.Select(x => new Dropdown.OptionData(x.ProfileName)).ToList());
-            _playerProfileDropdown.onValueChanged.AddListener(UpdatePlayerControlsProfile);
         }
-        
+
         private void UpdatePlayerControlsProfile(int index)
         {
             _playerControlsProfile = _playerControlManager.GetPlayerControlsProfile(index);
@@ -42,9 +44,7 @@ namespace Brawler.UI
         {
             _characterImage.sprite = character.CharacterPortrait;
             Text.text = character.CharacterInfo.CharacterName;
-            MusicManager.Instance.PlayClip(character.CharacterClips.SelectSound);
-
-            //SetReady();
+            
         }
 
         private void SetReady()

@@ -21,10 +21,9 @@ namespace Brawler.Networking
             _playerScore = 0;
         }
 
-        public void ModifyPlayerScore(int amount)
+        public int ModifyPlayerScore(int amount)
         {
-            _playerScore -= amount;
-            Debug.LogFormat("New Score: {0}", _playerScore);
+            return _playerScore += amount;
         }
     }
 }

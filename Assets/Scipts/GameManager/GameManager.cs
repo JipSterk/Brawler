@@ -2,10 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Brawler.Characters;
 using Brawler.GameManagement;
 using Brawler.GamePlay;
-using Brawler.Items;
 using Brawler.LevelManagment;
 using Brawler.Networking;
 using Brawler.SaveLoad;
@@ -14,16 +12,15 @@ namespace Brawler.GameSettings
 {
     public class GameManager : MonoBehaviour
     {
-        public static GameManager Instance { get { return _instance; } }
+        public static GameManager Instance { get { return _instance ?? new GameObject("Game Manager").AddComponent<GameManager>(); } }
+        public MenuState MenuState { get { return _menuState; } }
         public MatchSettings MatchSettings { get { return _matchSettings; } }
         public PlayerOnlineInfo PlayerOnlineInfo { get { return _playerOnlineInfo; } }
-        public MenuState MenuState { get { return _menuState; } }
-        public List<Item> ActiveItems { get { return _activeItems; } }
-        public Announcer Announcer { get { return _announcer; } }
-
-        public event CallBack<GamePlayer, GamePlayer, List<Item>, Level> OnStartMatch;
-        public event CallBack<MatchSettings> OnMatchSettingsUpdate;
-        public event CallBack<MenuState> OnUpdateMenuState;
+        
+        public event Callback<GamePlayer, GamePlayer, Level, MatchSettings> OnMatchStart;
+        public event Callback OnMatchEnd;
+        public event Callback<MatchSettings> OnMatchSettingsUpdate;
+        public event Callback<MenuState> OnUpdateMenuState;
 
         [SerializeField] private MatchSettings _matchSettings;
         [SerializeField] private MatchSettings _defaultMatchSettings;
@@ -32,12 +29,10 @@ namespace Brawler.GameSettings
 
         private static GameManager _instance;
         private MenuState _menuState;
-        private Announcer _announcer;
         private Level _level;
-        private List<Item> _activeItems = new List<Item>();
         private GamePlayer _player2;
         private GamePlayer _player1;
-
+        
         private void Awake()
         {
             if (_instance)
@@ -52,11 +47,9 @@ namespace Brawler.GameSettings
 
         private void Start()
         {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-
-            _announcer = GetComponent<Announcer>();
-
+            //Cursor.visible = false;
+            //Cursor.lockState = CursorLockMode.Locked;
+        
             SaveLoadManager.Instance.WhenSaveFileExist += LoadPlayerOnlineInfo;
             _matchSettings = _defaultMatchSettings;
             StartCoroutine(Init());
@@ -103,22 +96,26 @@ namespace Brawler.GameSettings
         {
             StartCoroutine(StartMatchInternal(level));
         }
-
+        
         private IEnumerator StartMatchInternal(Level level)
         {
             _level = level;
-            _activeItems = ItemManager.Instance.AllActiveItems;
             
             yield return StartCoroutine(LevelManager.Instance.LoadLevelAsync(_level));
             _level.SetupSpawnPoints();
             
-            if (OnStartMatch != null)
-                OnStartMatch(_player1, _player2, _activeItems, _level);
+            if (OnMatchStart != null)
+                OnMatchStart(_player1, _player2, _level, _matchSettings);
 
             SetupGameCamera();
 
-            CharacterManager.Instance.InstantiateCharacter(_player1.Character, _player1.PlayerControlsProfile, _level.Player1SpawnPoint);
-            CharacterManager.Instance.InstantiateCharacter(_player2.Character, _player2.PlayerControlsProfile, _level.Player2SpawnPoint);
+            UpdateMenuState(MenuState.OfflineMultiplayer);
+        }
+
+        private void EndMatch()
+        {
+            if (OnMatchEnd != null)
+                OnMatchEnd();
         }
 
         private void LoadPlayerOnlineInfo(SaveData saveData)

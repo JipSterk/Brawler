@@ -9,9 +9,9 @@ namespace Brawler.Networking
     {
         public override Component Component { get { return this; } }
 
-        public override void Init(CSteamID cSteamId, CallBack<CSteamID> callBack)
+        public override void Init(CSteamID cSteamId, Callback<CSteamID> callback)
         {
-            base.Init(cSteamId, callBack);
+            base.Init(cSteamId, callback);
             var lobbyName = SteamMatchmaking.GetLobbyData(Item, "Name");
             var lobbyCurrentSize = SteamMatchmaking.GetLobbyData(Item, "CurrentSize");
 

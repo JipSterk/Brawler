@@ -10,6 +10,7 @@
         MatchRules,
         OfflineMultiplayer,
         PlayerInput,
+        NewPlayerInputProfile,
         SoundSettings,
         FighterOutline,
         DamageDisplay,

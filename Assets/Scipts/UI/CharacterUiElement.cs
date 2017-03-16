@@ -5,29 +5,29 @@ using UnityEngine.UI;
 
 namespace Brawler.UI
 {
-    public class CharacterUiElement : BaseUiElement<Character>
-    {
-        public override Component Component { get { return this; } }
+    //public class CharacterUiElement : BaseUiElement<Character>
+    //{
+    //    public override Component Component { get { return this; } }
 
-        [SerializeField] private Image _characterImage;
+    //    [SerializeField] private Image _characterImage;
 
-        public override void Init(Character character, CallBack<Character> callBack)
-        {
-            Item = character;
+    //    public override void Init(Character character, Callback<Character> callback)
+    //    {
+    //        Item = character;
 
-            transform.name = string.Format("{0} UIProfile", Item.CharacterInfo.CharacterName);
-            _characterImage.sprite = Item.CharacterPortrait;
-            Item.OnCharacterDamage.Register(UpdateCharacterInfoUi);
-        }
+    //        transform.name = string.Format("{0} UIProfile", Item.CharacterInfo.CharacterName);
+    //        _characterImage.sprite = Item.CharacterPortrait;
+    //        Item.OnCharacterDamage += UpdateCharacterInfoUi;
+    //    }
         
-        private void UpdateCharacterInfoUi(float procent)
-        {
-            Text.text = string.Format("{0:P}", procent);
-        }
+    //    private void UpdateCharacterInfoUi(float procent)
+    //    {
+    //        Text.text = string.Format("{0:P}", procent);
+    //    }
         
-        public override void OnDisable()
-        {
-            PoolManager.Instance.ReturnToPool(this);
-        }
-    }
+    //    public override void OnDisable()
+    //    {
+    //        PoolManager.Instance.ReturnToPool(this);
+    //    }
+    //}
 }

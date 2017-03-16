@@ -166,7 +166,7 @@ namespace Steamworks {
 			m_SteamID = (m_SteamID & ~(0xFFFFFul << (ushort)32)) | (((ulong)(other) & 0xFFFFFul) << (ushort)32);
 		}
 
-		// This is a non standard/custom function not found in C++ Steamworks
+		// This is a non standard/custom function not found in C++ SteamworksLudo
 		public void SetEAccountType(EAccountType other) {
 			m_SteamID = (m_SteamID & ~(0xFul << (ushort)52)) | (((ulong)(other) & 0xFul) << (ushort)52);
 		}

@@ -84,7 +84,7 @@ namespace Brawler.CustomInput
             var buttons = new JoyStickButton[8];
             
             for (var i = 0; i < buttons.Length; i++)
-                buttons[i] = new JoyStickButton(_joyStickButtons[i, index], (ActionType)i,_buttonNames[i]);
+                buttons[i] = new JoyStickButton(_joyStickButtons[i, index], _buttonNames[i]);
 
             return buttons;
         }

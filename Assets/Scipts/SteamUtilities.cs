@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 namespace Brawler.Steam
 {
-    public static class SteamUtilitys
+    public static class SteamUtilities
     {
-        public static IEnumerator FetchSteamInfo(Image image, CSteamID cSteamId)
+        public static IEnumerator FetchSteamInfo(this Image image, CSteamID cSteamId)
         {
             uint width;
             uint height;
@@ -24,11 +24,11 @@ namespace Brawler.Steam
             SteamUtils.GetImageSize(avatarInt, out width, out height);
             var avatarStream = new byte[4 * (int)width * (int)height];
             SteamUtils.GetImageRGBA(avatarInt, avatarStream, 4 * (int)width * (int)height);
-            var avatar = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false);
-            avatar.LoadRawTextureData(avatarStream);
-            avatar.Apply();
+            var texture2D = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false);
+            texture2D.LoadRawTextureData(avatarStream);
+            texture2D.Apply();
 
-            image.sprite = Sprite.Create(avatar, rect, pivot);
+            image.sprite = Sprite.Create(texture2D, rect, pivot);
         }
     }
 }

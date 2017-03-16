@@ -9,7 +9,7 @@ namespace Brawler.Pooling
         public static PoolManager Instance { get { return _instance ?? new GameObject("Pool Manager").AddComponent<PoolManager>(); } }
 
         private static PoolManager _instance;
-        private Dictionary<Type, Pool> _pools = new Dictionary<Type, Pool>();
+        private readonly Dictionary<Type, Pool> _pools = new Dictionary<Type, Pool>();
         
         private void Awake()
         {
@@ -42,6 +42,11 @@ namespace Brawler.Pooling
         public Component GetFromPool(Type type)
         {
             return _pools[type].GetFromPool();
+        }
+
+        public Pool GetPool(Type type)
+        {
+            return _pools[type];
         }
 
         public void ReturnToPool(IPoolAble iPoolAble)

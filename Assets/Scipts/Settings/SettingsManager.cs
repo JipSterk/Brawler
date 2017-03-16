@@ -5,11 +5,11 @@ namespace Brawler.GameSettings
 {
     public class SettingsManager : MonoBehaviour
     {
-        public static SettingsManager Instance { get { return _instance; } }
+        public static SettingsManager Instance { get { return _instance ?? new GameObject("Settings Manager").AddComponent<SettingsManager>(); } }
         public Settings Settings { get { return _settings; } }
         public Settings DefaultSettings { get { return _defaultSettings; } }
 
-        public event CallBack<Settings> OnSettingsUpdate;
+        public event Callback<Settings> OnSettingsUpdate;
 
         [SerializeField] private Settings _settings;
         [SerializeField] private Settings _defaultSettings;

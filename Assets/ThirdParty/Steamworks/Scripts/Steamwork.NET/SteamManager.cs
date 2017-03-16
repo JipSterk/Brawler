@@ -1,4 +1,4 @@
-// The SteamManager is designed to work with Steamworks.NET
+// The SteamManager is designed to work with SteamworksLudo.NET
 // This file is released into the public domain.
 // Where that dedication is not recognized you are granted a perpetual,
 // irrevokable license to copy and modify this files as you see fit.
@@ -10,7 +10,7 @@ using System.Collections;
 using Steamworks;
 
 //
-// The SteamManager provides a base implementation of Steamworks.NET on which you can build upon.
+// The SteamManager provides a base implementation of SteamworksLudo.NET on which you can build upon.
 // It handles the basics of starting up and shutting down the SteamAPI for use.
 //
 [DisallowMultipleComponent]
@@ -54,11 +54,11 @@ class SteamManager : MonoBehaviour {
 		DontDestroyOnLoad(gameObject);
 
 		if (!Packsize.Test()) {
-			Debug.LogError("[Steamworks.NET] Packsize Test returned false, the wrong version of Steamworks.NET is being run in this platform.", this);
+			Debug.LogError("[SteamworksLudo.NET] Packsize Test returned false, the wrong version of SteamworksLudo.NET is being run in this platform.", this);
 		}
 
 		if (!DllCheck.Test()) {
-			Debug.LogError("[Steamworks.NET] DllCheck Test returned false, One or more of the Steamworks binaries seems to be the wrong version.", this);
+			Debug.LogError("[SteamworksLudo.NET] DllCheck Test returned false, One or more of the SteamworksLudo binaries seems to be the wrong version.", this);
 		}
 
 		try {
@@ -74,7 +74,7 @@ class SteamManager : MonoBehaviour {
 			}
 		}
 		catch (System.DllNotFoundException e) { // We catch this exception here, as it will be the first occurence of it.
-			Debug.LogError("[Steamworks.NET] Could not load [lib]steam_api.dll/so/dylib. It's likely not in the correct location. Refer to the README for more details.\n" + e, this);
+			Debug.LogError("[SteamworksLudo.NET] Could not load [lib]steam_api.dll/so/dylib. It's likely not in the correct location. Refer to the README for more details.\n" + e, this);
 
 			Application.Quit();
 			return;
@@ -94,7 +94,7 @@ class SteamManager : MonoBehaviour {
 		// http://technet.microsoft.com/en-us/sysinternals/bb896647.aspx
 		m_bInitialized = SteamAPI.Init();
 		if (!m_bInitialized) {
-			Debug.LogError("[Steamworks.NET] SteamAPI_Init() failed. Refer to Valve's documentation or the comment above this line for more information.", this);
+			Debug.LogError("[SteamworksLudo.NET] SteamAPI_Init() failed. Refer to Valve's documentation or the comment above this line for more information.", this);
 
 			return;
 		}
@@ -102,7 +102,7 @@ class SteamManager : MonoBehaviour {
 		s_EverInialized = true;
 	}
 
-	// This should only ever get called on first load and after an Assembly reload, You should never Disable the Steamworks Manager yourself.
+	// This should only ever get called on first load and after an Assembly reload, You should never Disable the SteamworksLudo Manager yourself.
 	private void OnEnable() {
 		if (s_instance == null) {
 			s_instance = this;
@@ -123,7 +123,7 @@ class SteamManager : MonoBehaviour {
 
 	// OnApplicationQuit gets called too early to shutdown the SteamAPI.
 	// Because the SteamManager should be persistent and never disabled or destroyed we can shutdown the SteamAPI here.
-	// Thus it is not recommended to perform any Steamworks work in other OnDestroy functions as the order of execution can not be garenteed upon Shutdown. Prefer OnDisable().
+	// Thus it is not recommended to perform any SteamworksLudo work in other OnDestroy functions as the order of execution can not be garenteed upon Shutdown. Prefer OnDisable().
 	private void OnDestroy() {
 		if (s_instance != this) {
 			return;

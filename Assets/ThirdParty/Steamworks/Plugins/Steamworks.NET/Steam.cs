@@ -46,7 +46,7 @@ namespace Steamworks {
 			return Init();
 		}
 
-		// [Steamworks.NET] This is for Ease of use, since we don't need to care about the differences between them in C#.
+		// [SteamworksLudo.NET] This is for Ease of use, since we don't need to care about the differences between them in C#.
 		public static bool Init() {
 			InteropHelp.TestIfPlatformSupported();
 			return NativeMethods.SteamAPI_InitSafe();
@@ -123,7 +123,7 @@ namespace Steamworks {
 			}
 		}
 
-		// [Steamworks.NET] This is for Ease of use, since we don't need to care about the differences between them in C#.
+		// [SteamworksLudo.NET] This is for Ease of use, since we don't need to care about the differences between them in C#.
 		public static bool Init(uint unIP, ushort usSteamPort, ushort usGamePort, ushort usQueryPort, EServerMode eServerMode, string pchVersionString) {
 			InteropHelp.TestIfPlatformSupported();
 			using (var pchVersionString2 = new InteropHelp.UTF8StringHandle(pchVersionString)) {

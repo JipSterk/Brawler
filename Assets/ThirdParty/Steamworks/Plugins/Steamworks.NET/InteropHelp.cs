@@ -13,25 +13,25 @@ namespace Steamworks {
 	public class InteropHelp {
 		public static void TestIfPlatformSupported() {
 #if !UNITY_EDITOR && !UNITY_STANDALONE_WIN && !UNITY_STANDALONE_LINUX && !UNITY_STANDALONE_OSX && !STEAMWORKS_WIN && !STEAMWORKS_LIN_OSX
-			throw new System.InvalidOperationException("Steamworks functions can only be called on platforms that Steam is available on.");
+			throw new System.InvalidOperationException("SteamworksLudo functions can only be called on platforms that Steam is available on.");
 #endif
 		}
 
 		public static void TestIfAvailableClient() {
 			TestIfPlatformSupported();
 			if (NativeMethods.SteamClient() == System.IntPtr.Zero) {
-				throw new System.InvalidOperationException("Steamworks is not initialized.");
+				throw new System.InvalidOperationException("SteamworksLudo is not initialized.");
 			}
 		}
 
 		public static void TestIfAvailableGameServer() {
 			TestIfPlatformSupported();
 			if (NativeMethods.SteamClientGameServer() == System.IntPtr.Zero) {
-				throw new System.InvalidOperationException("Steamworks is not initialized.");
+				throw new System.InvalidOperationException("SteamworksLudo is not initialized.");
 			}
 		}
 		
-		// This continues to exist for both 'out string' and strings returned by Steamworks functions.
+		// This continues to exist for both 'out string' and strings returned by SteamworksLudo functions.
 		public static string PtrToStringUTF8(IntPtr nativeUtf8) {
 			if (nativeUtf8 == IntPtr.Zero) {
 				return string.Empty;

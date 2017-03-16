@@ -2,11 +2,11 @@
 // Copyright (c) 2013-2015 Riley Labrecque
 // Please see the included LICENSE.txt for additional information.
 
-// Changes to this file will be reverted when you update Steamworks.NET
+// Changes to this file will be reverted when you update SteamworksLudo.NET
 
 
 #if UNITY_3_5 || UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_5
-	#error Unsupported Unity platform. Steamworks.NET requires Unity 4.6 or higher.
+	#error Unsupported Unity platform. SteamworksLudo.NET requires Unity 4.6 or higher.
 #elif UNITY_4_6 || UNITY_5
 	#if UNITY_EDITOR_WIN || (UNITY_STANDALONE_WIN && !UNITY_EDITOR)
 		#define WINDOWS_BUILD
@@ -144,7 +144,7 @@ namespace Steamworks {
 			}
 		}
 
-		// Shouldn't get ever get called here, but this is what C++ Steamworks does!
+		// Shouldn't get ever get called here, but this is what C++ SteamworksLudo does!
 		private void OnRunCallResult(
 #if !STDCALL
 			IntPtr thisptr,
@@ -166,7 +166,7 @@ namespace Steamworks {
 			return m_size;
 		}
 
-		// Steamworks.NET Specific
+		// SteamworksLudo.NET Specific
 		private void BuildCCallbackBase() {
 			VTable = new CCallbackBaseVTable() {
 				m_RunCallResult = OnRunCallResult,
@@ -259,7 +259,7 @@ namespace Steamworks {
 
 		public void SetGameserverFlag() { m_CCallbackBase.m_nCallbackFlags |= CCallbackBase.k_ECallbackFlagsGameServer; }
 
-		// Shouldn't get ever get called here, but this is what C++ Steamworks does!
+		// Shouldn't get ever get called here, but this is what C++ SteamworksLudo does!
 		private void OnRunCallback(
 #if !STDCALL
 			IntPtr thisptr,
@@ -305,7 +305,7 @@ namespace Steamworks {
 			return m_size;
 		}
 
-		// Steamworks.NET Specific
+		// SteamworksLudo.NET Specific
 		private void BuildCCallbackBase() {
 			VTable = new CCallbackBaseVTable() {
 				m_RunCallback = OnRunCallback,

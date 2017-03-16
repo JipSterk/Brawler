@@ -1,36 +1,39 @@
-using System;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using System;
 
 namespace Brawler.Extentions
 {
     public static class ListExtentions
     {
-        public static void Shuffle<T>(this T[] array)
+        private static readonly Random Random = new Random();
+        
+        public static void Shuffle<T>(this IList<T> list)
         {
-            var random = new Random();
-            var length = array.Length;
-
-            for (var i = 0; i < length; i++)
-            {
-                var index = i + (int) (random.NextDouble() * (length - i));
-                var item = array[i];
-                array[index] = array[i];
-                array[i] = item;
-            }
-        }
-
-        public static void Shuffle<T>(this List<T> list)
-        {
-            var random = new Random();
             var length = list.Count;
 
             for (var i = 0; i < length; i++)
             {
-                var index = i + (int) (random.NextDouble() * (length - i));
+                var index = i + (int) (Random.NextDouble() * (length - i));
                 var item = list[i];
                 list[index] = list[i];
                 list[i] = item;
             }
+        }
+
+        public static List<T> FindObjectsOfTypeAll<T>()
+        {
+            var list = new List<T>();
+            for (var i = 0; i < SceneManager.sceneCount; i++)
+            {
+                var scene = SceneManager.GetSceneAt(i);
+                if (!scene.isLoaded)
+                    continue;
+
+                foreach (var gameObject in scene.GetRootGameObjects())
+                    list.AddRange(gameObject.GetComponentsInChildren<T>(true));
+            }
+            return list;
         }
     }
 }

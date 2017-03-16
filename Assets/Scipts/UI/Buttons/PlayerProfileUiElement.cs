@@ -8,10 +8,10 @@ namespace Brawler.UI
     {
         public override Component Component { get { return this; } }
 
-        public override void Init(PlayerControlsProfile playerControlsProfile, CallBack<PlayerControlsProfile> callBack)
+        public override void Init(PlayerControlsProfile playerControlsProfile, Callback<PlayerControlsProfile> callback)
         {
-            base.Init(playerControlsProfile, callBack);
-
+            base.Init(playerControlsProfile, callback);
+            
             transform.name = string.Format("Selecting: {0}", Item.ProfileName);
             Text.text = Item.ProfileName;
         }

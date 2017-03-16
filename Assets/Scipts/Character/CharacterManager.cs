@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Brawler.CustomInput;
+using Brawler.GameManagement;
 using Brawler.GameSettings;
 using Brawler.LevelManagment;
 
@@ -32,6 +33,14 @@ namespace Brawler.Characters
         private void Start()
         {
             _settingsManager = SettingsManager.Instance;
+
+            GameManager.Instance.OnMatchStart += SetupCharacters;
+        }
+
+        private void SetupCharacters(GamePlayer player1, GamePlayer player2, Level level, MatchSettings matchSettings)
+        {
+            InstantiateCharacter(player1.Character, player1.PlayerControlsProfile, level.Player1SpawnPoint);
+            InstantiateCharacter(player2.Character, player2.PlayerControlsProfile, level.Player2SpawnPoint);
         }
 
         public void InstantiateCharacter(Character character, PlayerControlsProfile playerControlsProfile, LevelSpawnPoint levelSpawnPoint)
@@ -42,23 +51,18 @@ namespace Brawler.Characters
 
         public void InstantiateRandomCharacter(PlayerControlsProfile playerControlsProfile, LevelSpawnPoint levelSpawnPoint)
         {
-            var tempCharacter = Instantiate(GetRandomCharacter(), levelSpawnPoint.transform.position, Quaternion.identity, levelSpawnPoint.transform);
+            var tempCharacter = Instantiate(_allCharacters.Random(), levelSpawnPoint.transform.position, Quaternion.identity, levelSpawnPoint.transform);
             tempCharacter.Init(playerControlsProfile, _settingsManager.Settings.CharacterOutline);
         }
-
-        private Character GetRandomCharacter()
-        {
-            return _allCharacters.Random();
-        }
-
+        
         public List<Character> UnlockedCharacters()
         {
-            return _allCharacters.Where(character => character.CharacterInfo.IsUnlocked).ToList();
+            return _allCharacters.Where(x => x.CharacterInfo.IsUnlocked).ToList();
         }
 
         public List<CharacterInfo> CharacterInfos()
         {
-            return _allCharacters.Select(character => character.CharacterInfo).ToList();
+            return _allCharacters.Select(x => x.CharacterInfo).ToList();
         }
 
         public Character GetCharacter(string characterName)
@@ -68,8 +72,7 @@ namespace Brawler.Characters
 
         public void UnlockCharacter(string characterName)
         {
-            var character = _allCharacters.First(x => x.CharacterInfo.CharacterName == characterName);
-            character.CharacterInfo.SetUnlocked();
+            _allCharacters.First(x => x.CharacterInfo.CharacterName == characterName).CharacterInfo.SetUnlocked();
         }
     }
 }

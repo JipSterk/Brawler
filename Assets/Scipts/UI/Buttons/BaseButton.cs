@@ -5,47 +5,47 @@ namespace Brawler.UI
 {
     public class BaseButton : Button
     {
-        public event CallBack SelectCallBack;
-        public event CallBack<AxisEventData> OnMoveCallBack;
-        public event CallBack<BaseEventData> OnSelectCallBack;
-        public event CallBack<BaseEventData> OnDeselectCallBack;
-        public event CallBack<BaseEventData> OnSubmitCallback;
-        public event CallBack<PointerEventData> OnPointerEnterCallBack;
-        public event CallBack<PointerEventData> OnPointerExitCallBack;
-        public event CallBack<PointerEventData> OnPointerClickCallBack;
-        public event CallBack<PointerEventData> OnPointerUpCallBack;
-        public event CallBack<PointerEventData> OnPointerDownCallBack;
+        public event Callback SelectCallback;
+        public event Callback<AxisEventData> OnMoveCallback;
+        public event Callback<BaseEventData> OnSelectCallback;
+        public event Callback<BaseEventData> OnDeselectCallback;
+        public event Callback<BaseEventData> OnSubmitCallback;
+        public event Callback<PointerEventData> OnPointerEnterCallback;
+        public event Callback<PointerEventData> OnPointerExitCallback;
+        public event Callback<PointerEventData> OnPointerClickCallback;
+        public event Callback<PointerEventData> OnPointerUpCallback;
+        public event Callback<PointerEventData> OnPointerDownCallback;
 
         public override void Select()
         {
             base.Select();
 
-            if (SelectCallBack != null)
-                SelectCallBack();
+            if (SelectCallback != null)
+                SelectCallback();
         }
 
         public override void OnMove(AxisEventData axisEventData)
         {
             base.OnMove(axisEventData);
 
-            if (OnMoveCallBack != null)
-                OnMoveCallBack(axisEventData);
+            if (OnMoveCallback != null)
+                OnMoveCallback(axisEventData);
         }
 
         public override void OnSelect(BaseEventData baseEventData)
         {
             base.OnSelect(baseEventData);
 
-            if (OnSelectCallBack != null)
-                OnSelectCallBack(baseEventData);
+            if (OnSelectCallback != null)
+                OnSelectCallback(baseEventData);
         }
 
         public override void OnDeselect(BaseEventData baseEventData)
         {
             base.OnDeselect(baseEventData);
 
-            if (OnDeselectCallBack != null)
-                OnDeselectCallBack(baseEventData);
+            if (OnDeselectCallback != null)
+                OnDeselectCallback(baseEventData);
         }
 
         public override void OnSubmit(BaseEventData baseEventData)
@@ -60,30 +60,30 @@ namespace Brawler.UI
         {
             base.OnPointerClick(pointerEventData);
 
-            if(OnPointerClickCallBack != null)
-                OnPointerClickCallBack(pointerEventData);
+            if(OnPointerClickCallback != null)
+                OnPointerClickCallback(pointerEventData);
         }
 
         public override void OnPointerEnter(PointerEventData eventData)
         {
             base.OnPointerEnter(eventData);
 
-            if (OnPointerEnterCallBack != null)
-                OnPointerEnterCallBack(eventData);
+            if (OnPointerEnterCallback != null)
+                OnPointerEnterCallback(eventData);
         }
 
         public override void OnPointerExit(PointerEventData pointerEventData)
         {
             base.OnPointerExit(pointerEventData);
 
-            if (OnPointerExitCallBack != null)
-                OnPointerExitCallBack(pointerEventData);
+            if (OnPointerExitCallback != null)
+                OnPointerExitCallback(pointerEventData);
         }
 
         public override void OnPointerUp(PointerEventData pointerEventData)
         {
-            if (OnPointerUpCallBack != null)
-                OnPointerUpCallBack(pointerEventData);
+            if (OnPointerUpCallback != null)
+                OnPointerUpCallback(pointerEventData);
 
             base.OnPointerUp(pointerEventData);
         }
@@ -92,8 +92,8 @@ namespace Brawler.UI
         {
             base.OnPointerDown(pointerEventData);
 
-            if (OnPointerDownCallBack != null)
-                OnPointerDownCallBack(pointerEventData);
+            if (OnPointerDownCallback != null)
+                OnPointerDownCallback(pointerEventData);
         }
     }
 }

@@ -13,11 +13,11 @@ namespace Brawler.UI
     
         private Button _button;
         
-        public void Init(CallBack<MenuState> callBack)
+        public void Init(Callback<MenuState> callback)
         {
             _button = GetComponentInChildren<Button>();
             _button.onClick.RemoveAllListeners();
-            _button.onClick.AddListener(() => callBack(_menuState));
+            _button.onClick.AddListener(() => callback(_menuState));
         }
     }
 }

@@ -14,8 +14,8 @@ namespace Brawler.SaveLoad
     {
         public static SaveLoadManager Instance { get { return _instance ?? new GameObject("Save Load Manager").AddComponent<SaveLoadManager>(); } }
 
-        public event CallBack<SaveData> WhenSaveFileExist;
-        public event CallBack GatherAllData;
+        public event Callback<SaveData> WhenSaveFileExist;
+        public event Callback GatherAllData;
 
         private static SaveLoadManager _instance;
 

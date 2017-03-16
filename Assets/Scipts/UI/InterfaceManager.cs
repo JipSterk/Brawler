@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using Brawler.Characters;
 using Brawler.CustomInput;
+using Brawler.Extentions;
 using Brawler.GameSettings;
 using Brawler.LevelManagment;
 using Brawler.Networking;
@@ -17,13 +18,12 @@ namespace Brawler.UI
 {
     public class InterfaceManager : MonoBehaviour
     {
-        public InterfaceMenu[] InterfaceMenus { get { return _interfaceMenus; } }
         public static InterfaceManager Instance { get { return _instance ?? new GameObject("Interface Manager").AddComponent<InterfaceManager>(); } }
-
+        public InterfaceMenu[] InterfaceMenus { get { return _interfaceMenus; } }
+        
         [SerializeField] private CountryInfoManager _countryInfoManager;
-        [SerializeField] private CharacterUiElement _characterUiElementPrefab;
         [SerializeField] private LevelSelectUiElement _levelSelectUiElementPrefab;
-        [SerializeField] private PlayerProfileUiElement _playerProfileUiPrefab;
+        [SerializeField] private PlayerProfileUiElement _playerProfileUiElementPrefab;
         [SerializeField] private InputField _matchNameInputField;
         [SerializeField] private InputField _matchPasswordInputField;
         [SerializeField] private InputField _newProfileNameInputField;
@@ -35,21 +35,19 @@ namespace Brawler.UI
         [SerializeField] private Text _playerNameText;
         [SerializeField] private Text _versionNumberText;
         [SerializeField] private Transform _characterElementParent;
-        [SerializeField] private Transform _characterUiParent;
         [SerializeField] private Transform _characterSelectParent;
         [SerializeField] private Transform _levelElementParent;
         [SerializeField] private Transform _roomListParent;
         [SerializeField] private Transform _playerProfileParent;
-        [SerializeField] private GridLayoutGroup _characterSelectGridLayout;
         [SerializeField] private InterfaceMenu[] _interfaceMenus;
 
         private static InterfaceManager _instance;
         private GameObject[] _interfaceScreens;
+        private List<CharacterItemUiElement> _characterSelectElements = new List<CharacterItemUiElement>();
         private GameManager _gameManager;
         private PlayerControlManager _playerControlManager;
         private CustomNetworkManager _customNetworkManager;
-        private CharacterItemUiElement[] _characterSelectElements;
-
+        
         private void Awake()
         {
             if (_instance)
@@ -66,21 +64,27 @@ namespace Brawler.UI
             _gameManager = GameManager.Instance;
             _customNetworkManager = CustomNetworkManager.Instance;
             _playerControlManager = PlayerControlManager.Instance;
-
+            
             _gameManager.OnUpdateMenuState += UpdateMenuUi;
 
             _interfaceScreens = _interfaceMenus.Select(x => x.gameObject).ToArray();
 
+            _newPlayerProfileButton.onClick.AddListener(NamePlayerInputProfile);
             _newProfileNameInputField.onEndEdit.AddListener(NamePlayerProfile);
-            //_newPlayerProfileButton.onClick.AddListener();
             _quitButton.onClick.AddListener(Quit);
 
-            _characterSelectElements = FindObjectsOfType<CharacterItemUiElement>();
-            
-            var uiButtons = Resources.FindObjectsOfTypeAll<UiButton>();
-            CallBack<MenuState> callback = _gameManager.UpdateMenuState;
+            _characterSelectElements = ListExtentions.FindObjectsOfTypeAll<CharacterItemUiElement>();
+
+            var uiButtons = ListExtentions.FindObjectsOfTypeAll<UiButton>().ToArray();
+            Callback<MenuState> callback = _gameManager.UpdateMenuState;
             foreach (var interfaceMenu in _interfaceMenus)
                 interfaceMenu.Init(uiButtons, callback);
+        }
+
+        private void NamePlayerInputProfile()
+        {
+
+            _gameManager.UpdateMenuState(MenuState.NewPlayerInputProfile);
         }
 
         private void UpdateMenuUi(MenuState menuState)
@@ -92,33 +96,36 @@ namespace Brawler.UI
                 case MenuState.TitleScreen:
                     break;
                 case MenuState.Menu:
+                    _playerNameText.text = _gameManager.PlayerOnlineInfo.PlayerName;
+                    _countyImage.sprite = _countryInfoManager.GetCountrySprite(_gameManager.PlayerOnlineInfo.PlayerCounty);
+
                     if (!_customNetworkManager.ConnectedToSteam)
                         return;
 
-                    _playerNameText.text = _gameManager.PlayerOnlineInfo.PlayerName;
                     _versionNumberText.text = string.Format("Version: {0}", SteamAppList.GetAppBuildId(AppId_t.Invalid));
-                    StartCoroutine(SteamUtilitys.FetchSteamInfo(_avatarImage, SteamUser.GetSteamID()));
-                    _countyImage.sprite = _countryInfoManager.GetCountrySprite(_gameManager.PlayerOnlineInfo.PlayerCounty);
+                    StartCoroutine(_avatarImage.FetchSteamInfo(SteamUser.GetSteamID()));
                     break;
                 case MenuState.OnlineMultiplayer:
                     break;
                 case MenuState.CharacterSelection:
                     var allCharacters = CharacterManager.Instance.AllCharacters;
 
-                    for (var i = _characterSelectElements.Length - 1; i >= 0; i--)
+                    for (var i = 0; i < _characterSelectElements.Count; i++)
                         _characterSelectElements[i].Init(allCharacters[i], SelectCharacter);
                     break;
                 case MenuState.LevelSelection:
                     var unlockedLevels = LevelManager.Instance.UnlockedLevels();
-                    unlockedLevels.InstantiateAllElements(_gameManager.StartMatch, _levelSelectUiElementPrefab, _levelElementParent);
+                    unlockedLevels.InstantiateAllUiElements(_gameManager.StartMatch, _levelSelectUiElementPrefab, _levelElementParent);
                     break;
                 case MenuState.MatchRules:
                     break;
                 case MenuState.OfflineMultiplayer:
                     break;
                 case MenuState.PlayerInput:
-                    var playerControlsProfiles = PlayerControlManager.Instance.PlayerControlsProfiles;
-                    playerControlsProfiles.InstantiateAllElements(LoadProfile, _playerProfileUiPrefab, _playerProfileParent);
+                    var playerControlsProfiles = _playerControlManager.PlayerControlsProfiles;
+                    playerControlsProfiles.InstantiateAllUiElements(LoadProfile, _playerProfileUiElementPrefab, _playerProfileParent);
+                    break;
+                case MenuState.NewPlayerInputProfile:
                     break;
                 case MenuState.SoundSettings:
                     break;

@@ -50,7 +50,7 @@ namespace Steamworks {
 		/// <para> Set / update stats and achievements.</para>
 		/// <para> Note: These updates will work only on stats game servers are allowed to edit and only for</para>
 		/// <para> game servers that have been declared as officially controlled by the game creators.</para>
-		/// <para> Set the IP range of your official servers on the Steamworks page</para>
+		/// <para> Set the IP range of your official servers on the SteamworksLudo page</para>
 		/// </summary>
 		public static bool SetUserStat(CSteamID steamIDUser, string pchName, int nData) {
 			InteropHelp.TestIfAvailableGameServer();

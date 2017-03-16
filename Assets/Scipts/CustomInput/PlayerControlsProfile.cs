@@ -36,9 +36,9 @@ namespace Brawler.CustomInput
             _dPadVertical = axises[7];
          }
 
-        public void RemapButton(string buttonName, JoyStickButtons joyStickButtons, ActionType actionType)
+        public void RemapButton(string buttonName, JoyStickButtons joyStickButtons)
         {
-            _joyStickButtons[buttonName] = new JoyStickButton(joyStickButtons, actionType, buttonName);
+            _joyStickButtons[buttonName] = new JoyStickButton(joyStickButtons, buttonName);
         }
 
         public string ProfileName { get { return _profileName; } }

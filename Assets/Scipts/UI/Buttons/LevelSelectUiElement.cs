@@ -11,10 +11,10 @@ namespace Brawler.UI
 
         [SerializeField] private Image _image;
 
-        public override void Init(Level level, CallBack<Level> callBack)
+        public override void Init(Level level, Callback<Level> callback)
         {
-            base.Init(level, callBack);
-
+            base.Init(level, callback);
+            
             transform.name = string.Format("Selecting: {0}", Item.LevelData.LevelName);
             Text.text = Item.LevelData.LevelName;
             _image.sprite = level.LevelSprite;

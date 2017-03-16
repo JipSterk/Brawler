@@ -6,7 +6,7 @@ namespace Brawler.Prefabs
 {
     public class PrefabManager : MonoBehaviour
     {
-        public static PrefabManager Instance { get { return _instance; } }
+        public static PrefabManager Instance { get { return _instance ?? new GameObject("Prefab Manager").AddComponent<PrefabManager>(); } }
 
         private static PrefabManager _instance;
 

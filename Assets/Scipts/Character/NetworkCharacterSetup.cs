@@ -7,7 +7,7 @@ namespace Brawler.Networking.Character
     {
         [SerializeField] private Behaviour[] _behaviours;
 
-        private Callback<ThreadPriority> x;
+        private Steamworks.Callback<ThreadPriority> x;
 
         private void Start()
         {

@@ -31,7 +31,7 @@ namespace Steamworks {
 
 		/// <summary>
 		/// <para> returns the CSteamID of the account currently logged into the Steam client</para>
-		/// <para> a CSteamID is a unique identifier for an account, and used to differentiate users in all parts of the Steamworks API</para>
+		/// <para> a CSteamID is a unique identifier for an account, and used to differentiate users in all parts of the SteamworksLudo API</para>
 		/// </summary>
 		public static CSteamID GetSteamID() {
 			InteropHelp.TestIfAvailableClient();
@@ -114,7 +114,7 @@ namespace Steamworks {
 		/// <para> data is not the raw feed from the microphone: data may only be available if audible</para>
 		/// <para> levels of speech are detected.</para>
 		/// <para> nUncompressedVoiceDesiredSampleRate is necessary to know the number of bytes to return in pcbUncompressed - can be set to 0 if you don't need uncompressed (the usual case)</para>
-		/// <para> If you're upgrading from an older Steamworks API, you'll want to pass in 11025 to nUncompressedVoiceDesiredSampleRate</para>
+		/// <para> If you're upgrading from an older SteamworksLudo API, you'll want to pass in 11025 to nUncompressedVoiceDesiredSampleRate</para>
 		/// </summary>
 		public static EVoiceResult GetAvailableVoice(out uint pcbCompressed, out uint pcbUncompressed, uint nUncompressedVoiceDesiredSampleRate) {
 			InteropHelp.TestIfAvailableClient();
@@ -132,7 +132,7 @@ namespace Steamworks {
 		/// <para> You must grab both compressed and uncompressed here at the same time, if you want both.</para>
 		/// <para> Matching data that is not read during this call will be thrown away.</para>
 		/// <para> GetAvailableVoice() can be used to determine how much data is actually available.</para>
-		/// <para> If you're upgrading from an older Steamworks API, you'll want to pass in 11025 to nUncompressedVoiceDesiredSampleRate</para>
+		/// <para> If you're upgrading from an older SteamworksLudo API, you'll want to pass in 11025 to nUncompressedVoiceDesiredSampleRate</para>
 		/// </summary>
 		public static EVoiceResult GetVoice(bool bWantCompressed, byte[] pDestBuffer, uint cbDestBufferSize, out uint nBytesWritten, bool bWantUncompressed, byte[] pUncompressedDestBuffer, uint cbUncompressedDestBufferSize, out uint nUncompressBytesWritten, uint nUncompressedVoiceDesiredSampleRate) {
 			InteropHelp.TestIfAvailableClient();
@@ -145,7 +145,7 @@ namespace Steamworks {
 		/// <para> In that case, nBytesWritten is set to the size of the buffer required to decompress the given</para>
 		/// <para> data. The suggested buffer size for the destination buffer is 22 kilobytes.</para>
 		/// <para> The output format of the data is 16-bit signed at the requested samples per second.</para>
-		/// <para> If you're upgrading from an older Steamworks API, you'll want to pass in 11025 to nDesiredSampleRate</para>
+		/// <para> If you're upgrading from an older SteamworksLudo API, you'll want to pass in 11025 to nDesiredSampleRate</para>
 		/// </summary>
 		public static EVoiceResult DecompressVoice(byte[] pCompressed, uint cbCompressed, byte[] pDestBuffer, uint cbDestBufferSize, out uint nBytesWritten, uint nDesiredSampleRate) {
 			InteropHelp.TestIfAvailableClient();
@@ -323,7 +323,7 @@ namespace Steamworks {
 
 		/// <summary>
 		/// <para> Returns a special SteamID that represents the user's PSN information. Can be used to query the user's PSN avatar,</para>
-		/// <para> online name, etc. through the standard Steamworks interfaces.</para>
+		/// <para> online name, etc. through the standard SteamworksLudo interfaces.</para>
 		/// </summary>
 		public static CSteamID GetConsoleSteamID() {
 			InteropHelp.TestIfAvailableClient();

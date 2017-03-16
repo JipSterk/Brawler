@@ -13,10 +13,10 @@ namespace Brawler.UI
 
         protected T Item;
         
-        public virtual void Init(T item, CallBack<T> callBack)
+        public virtual void Init(T item, Callback<T> callback)
         {
             Item = item;
-            BaseButton.onClick.AddListener(() => callBack(Item));
+            BaseButton.onClick.AddListener(() => callback(Item));
         }
         
         public abstract void OnDisable();

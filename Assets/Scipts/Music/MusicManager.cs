@@ -35,19 +35,22 @@ namespace Brawler.Music
 
         private void Start()
         {
-            _backGroundAudioSource = new GameObject("Back Ground").AddComponent<AudioSource>();
+            _backGroundAudioSource = new GameObject("BackGround").AddComponent<AudioSource>();
             _menuAudioSource = new GameObject("Menu").AddComponent<AudioSource>();
             _effectAudioSource = new GameObject("Effect").AddComponent<AudioSource>();
 
             _backGroundAudioSource.transform.SetParent(transform);
             _menuAudioSource.transform.SetParent(transform);
             _effectAudioSource.transform.SetParent(transform);
-
+            
             SaveLoadManager.Instance.WhenSaveFileExist += LoadSoundSettings;
         }
         
         public void PlayClip(MusicClip musicClip)
         {
+            if(!musicClip)
+                return;
+
             switch (musicClip.ClipType)
             {
                 case ClipType.Menu:
