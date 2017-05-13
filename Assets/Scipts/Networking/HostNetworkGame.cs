@@ -20,7 +20,7 @@ namespace Brawler.Networking
         private void CreateLobby(ELobbyType eLobbyType)
         {
             //SteamMatchmaking.AddRequestLobbyListNearValueFilter();
-            var tryToHost = SteamMatchmaking.CreateLobby(eLobbyType, _matchSize);
+            var createLobby = SteamMatchmaking.CreateLobby(eLobbyType, _matchSize);
             
         }
     }

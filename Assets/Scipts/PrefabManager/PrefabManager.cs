@@ -23,7 +23,7 @@ namespace Brawler.Prefabs
             _instance = this;
             DontDestroyOnLoad(gameObject);
         }
-
+        
         public List<Prefab> GetPrefabsByTags(string[] prefabTags)
         {
             return (from x in _prefabs from y in x.Tags where prefabTags.Any(z => z == y) select x).ToList();

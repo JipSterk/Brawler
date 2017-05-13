@@ -1,6 +1,5 @@
 ﻿#define USE_GS_AUTH_API
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Steamworks;
@@ -67,9 +66,9 @@ namespace Brawler.Networking
             _initialized = false;
             _connectedToSteam = false;
 #if USE_GS_AUTH_API
-            var eMode = EServerMode.eServerModeAuthenticationAndSecure;
+            const EServerMode eMode = EServerMode.eServerModeAuthenticationAndSecure;
 #else
-            var eMode = EServerMode.eServerModeNoAuthentication;
+            const EServerMode eMode = EServerMode.eServerModeNoAuthentication;
 #endif
             _initialized = GameServer.Init(0, BrawlerAuthenticationPort, BrawlerServerPort,
                 BrawlerMasterServerUpdaterPort, eMode, BrawlerServerVersion);

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using Brawler.LevelManagment;
+using Brawler.LevelManagement;
 using Brawler.Pooling;
 
 namespace Brawler.UI

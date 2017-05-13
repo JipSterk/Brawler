@@ -1,14 +1,12 @@
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Brawler
 {
     public static class RandomExtentions
     {
-        public static T Random<T>(this IEnumerable<T> iEnumerable)
+        public static T Random<T>(this IList<T> list)
         {
-            var array = iEnumerable.ToArray();
-            return array[UnityEngine.Random.Range(0, array.Length)];
+            return list[UnityEngine.Random.Range(0, list.Count)];
         }
     }
 }

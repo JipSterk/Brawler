@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
-using Brawler.CustomInput;
 using Brawler.GameSettings;
-using Brawler.LevelManagment;
+using Brawler.LevelManagement;
+using Rewired;
 
 namespace Brawler.Characters
 {
@@ -16,16 +15,18 @@ namespace Brawler.Characters
         public event Callback<float> OnCharacterDamage;
 
         [SerializeField] private Sprite _characterPortrait;
-        [SerializeField] private TextMesh _textMesh;
         [SerializeField] private CharacterInfo _characterInfo;
         [SerializeField] private CharacterStats _characterStats;
         [SerializeField] private CharacterClips _characterClips;
+        [SerializeField] private CharacterButtonNames _characterButtonNames;
         [SerializeField] private CharacterAttacks _characterAttacks;
         [SerializeField] [Range(0, 1)] private float _deadZone = 0.6f;
         [SerializeField] [Range(0, 1)] private float _leftTriggerThresHold = 0.5f;
         [SerializeField] [Range(0, 1)] private float _rightTriggerThresHold = 0.5f;
 
-        private PlayerControlsProfile _playerControlsProfile;
+        private Player _player;
+        private LevelManager _levelManager;
+        private GameManager _gameManager;
         private Animator _animator;
         private AnimatorStateInfo _animatorStateInfo;
         private AnimatorTransitionInfo _animatorTransitionInfo;
@@ -41,11 +42,8 @@ namespace Brawler.Characters
         private float _leftTrigger;
         private float _rightTrigger;
         private float _health;
-        private bool _isNockedOut;
-        
+        private bool _isKnockedOut;
         private int _locomotionId;
-        private LevelManager _levelManager;
-        private GameManager _gameManager;
         
         private void Start()
         {
@@ -57,12 +55,10 @@ namespace Brawler.Characters
             _locomotionId = Animator.StringToHash("Base Layer.Locomotion");
         }
 
-        public void Init(PlayerControlsProfile playerControlsProfile, CharacterOutline characterOutline)
+        public void Init(Player player, CharacterOutline characterOutline)
         {
-            _playerControlsProfile = playerControlsProfile;
+            _player = player;
             _characterOutline = characterOutline;
-
-            _textMesh.text = _playerControlsProfile.ProfileName;
             
             transform.name = _characterInfo.CharacterName;
             _health = _characterStats.Health;
@@ -70,36 +66,19 @@ namespace Brawler.Characters
 
         public void Update()
         {
-            _leftHorizontal = CustomInputManager.GetAxis(_playerControlsProfile.JoyStickLeftHorizontalAxis);
-            _leftVertical = CustomInputManager.GetAxis(_playerControlsProfile.JoyStickLeftVerticalAxis);
-            _rightHorizontal = CustomInputManager.GetAxis(_playerControlsProfile.JoyStickRightHorizontalAxis);
-            _rightVertical = CustomInputManager.GetAxis(_playerControlsProfile.JoyStickRightVerticalAxis);
-            _dpadHorizontal = CustomInputManager.GetAxis(_playerControlsProfile.DPadHorizontal);
-            _dpadVertical = CustomInputManager.GetAxis(_playerControlsProfile.DdPadVertical);
-            _leftTrigger = CustomInputManager.GetAxis(_playerControlsProfile.LeftTrigger);
-            _rightTrigger = CustomInputManager.GetAxis(_playerControlsProfile.RightTrigger);
-
-            if (CustomInputManager.GetButton(_playerControlsProfile.A))
-                NormalAttack();
-            if (CustomInputManager.GetButton(_playerControlsProfile.B))
-                SpecialAttack();
-            if (CustomInputManager.GetButton(_playerControlsProfile.X))
-                Jump();
-            if (CustomInputManager.GetButton(_playerControlsProfile.Y))
-                Jump();
-            if (CustomInputManager.GetButton(_playerControlsProfile.Lb))
-                Shield();
-            if (CustomInputManager.GetButton(_playerControlsProfile.Rb))
-                Shield();
+            //if (_player.GetButtonDown(_characterButtonNames.LightKick))
+            //if (_player.GetButtonDown(_characterButtonNames.MediumKick))
+            //if (_player.GetButtonDown(_characterButtonNames.HardKick))
+            //if (_player.GetButtonDown(_characterButtonNames.LightPunch))
+            //if (_player.GetButtonDown(_characterButtonNames.MediumPunch))
+            //if (_player.GetButtonDown(_characterButtonNames.HardPunch))
+            //_animatorStateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+            //_animatorTransitionInfo = _animator.GetAnimatorTransitionInfo(0);
 
             if (_leftTrigger > _leftTriggerThresHold)
                 Grab();
             if (_rightTrigger > _rightTriggerThresHold)
                 Grab();
-
-            //_animatorStateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-            //_animatorTransitionInfo = _animator.GetAnimatorTransitionInfo(0);
-
             MoveCharacter(new Vector2(_leftHorizontal, _leftVertical));
         }
         
@@ -115,7 +94,7 @@ namespace Brawler.Characters
         
         public void TakeDamage(float amount)
         {
-            if (!_isNockedOut)
+            if (!_isKnockedOut)
                 return;
 
             _health -= amount;
@@ -127,7 +106,7 @@ namespace Brawler.Characters
         public void SetDefaults(Vector3 startPosition)
         {
             _health = 0;
-            _isNockedOut = true;
+            _isKnockedOut = true;
             transform.position = startPosition;
         }
 

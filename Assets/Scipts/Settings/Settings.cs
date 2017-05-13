@@ -8,14 +8,13 @@ namespace Brawler.GameSettings
     [Serializable]
     public struct Settings
     {
-        public Settings(float backGroundVolume, float menuVolume, float soundEffectsVolume, CharacterOutline characterOutline, DamageDisplayLayout damageDisplayLayout, GraphicsSettings graphicsSettings)
+        public Settings(float backGroundVolume, float menuVolume, float soundEffectsVolume, CharacterOutline characterOutline, DamageDisplayLayout damageDisplayLayout)
         {
             _backGroundVolume = backGroundVolume;
             _menuVolume = menuVolume;
             _soundEffectsVolume = soundEffectsVolume;
             _characterOutline = characterOutline;
             _damageDisplayLayout = damageDisplayLayout;
-            _graphicsSettings = graphicsSettings;
         }
 
         public float BackGroundVolume { get { return _backGroundVolume; } }
@@ -23,13 +22,11 @@ namespace Brawler.GameSettings
         public float SoundEffectsVolume { get { return _soundEffectsVolume; } }
         public CharacterOutline CharacterOutline { get { return _characterOutline; } }
         public DamageDisplayLayout DamageDisplayLayout { get { return _damageDisplayLayout; } }
-        public GraphicsSettings GraphicsSettings { get { return _graphicsSettings; } }
-
+        
         [SerializeField] private float _backGroundVolume;
         [SerializeField] private float _menuVolume;
         [SerializeField] private float _soundEffectsVolume;
         [SerializeField] private CharacterOutline _characterOutline;
         [SerializeField] private DamageDisplayLayout _damageDisplayLayout;
-        [SerializeField] private GraphicsSettings _graphicsSettings;
     }
 }

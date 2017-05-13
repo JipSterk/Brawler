@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using Brawler.CustomInput;
 using Brawler.GameManagement;
 using Brawler.GameSettings;
-using Brawler.LevelManagment;
+using Brawler.LevelManagement;
 
 namespace Brawler.Characters
 {
@@ -39,20 +38,14 @@ namespace Brawler.Characters
 
         private void SetupCharacters(GamePlayer player1, GamePlayer player2, Level level, MatchSettings matchSettings)
         {
-            InstantiateCharacter(player1.Character, player1.PlayerControlsProfile, level.Player1SpawnPoint);
-            InstantiateCharacter(player2.Character, player2.PlayerControlsProfile, level.Player2SpawnPoint);
+            //InstantiateCharacter(player1.Character, player1.PlayerControlsProfile, level.Player1SpawnPoint);
+            //InstantiateCharacter(player2.Character, player2.PlayerControlsProfile, level.Player2SpawnPoint);
         }
 
-        public void InstantiateCharacter(Character character, PlayerControlsProfile playerControlsProfile, LevelSpawnPoint levelSpawnPoint)
+        private void InstantiateCharacter(Character character, /*PlayerControlsProfile playerControlsProfile,*/ LevelSpawnPoint levelSpawnPoint)
         {
             var tempCharacter = Instantiate(character, levelSpawnPoint.transform.position, Quaternion.identity, levelSpawnPoint.transform);
-            tempCharacter.Init(playerControlsProfile, _settingsManager.Settings.CharacterOutline);
-        }
-
-        public void InstantiateRandomCharacter(PlayerControlsProfile playerControlsProfile, LevelSpawnPoint levelSpawnPoint)
-        {
-            var tempCharacter = Instantiate(_allCharacters.Random(), levelSpawnPoint.transform.position, Quaternion.identity, levelSpawnPoint.transform);
-            tempCharacter.Init(playerControlsProfile, _settingsManager.Settings.CharacterOutline);
+            //tempCharacter.Init(playerControlsProfile, _settingsManager.Settings.CharacterOutline);
         }
         
         public List<Character> UnlockedCharacters()

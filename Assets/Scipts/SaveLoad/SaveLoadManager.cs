@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Brawler.CustomInput;
 using Brawler.GameSettings;
-using Brawler.LevelManagment;
+using Brawler.LevelManagement;
 using Brawler.Characters;
 using Brawler.Networking;
 using Steamworks;
@@ -57,25 +56,23 @@ namespace Brawler.SaveLoad
 
         private void CreateFirstSave()
         {
-            var allPlayerControlsProfiles = PlayerControlManager.Instance.PlayerControlsProfiles;
             var allCharacterInfos = CharacterManager.Instance.CharacterInfos();
             var allLevels = LevelManager.Instance.LevelDatas();
             var playerInfo = new PlayerOnlineInfo(SteamFriends.GetPersonaName(), SteamUtils.GetIPCountry());
             var settings = SettingsManager.Instance.DefaultSettings;
 
-            _saveData = new SaveData(allPlayerControlsProfiles, allCharacterInfos, allLevels, playerInfo, settings);
+            _saveData = new SaveData(allCharacterInfos, allLevels, playerInfo, settings);
             SaveToDisk(_saveData);
         }
 
         public void GatherData()
         {
-            var allPlayerControlsProfiles = PlayerControlManager.Instance.PlayerControlsProfiles;
             var allCharacterInfos = CharacterManager.Instance.CharacterInfos();
             var allLevels = LevelManager.Instance.LevelDatas();
             var playerOnlineInfo = GameManager.Instance.PlayerOnlineInfo;
             var settings = SettingsManager.Instance.Settings;
             
-            _saveData = new SaveData(allPlayerControlsProfiles, allCharacterInfos, allLevels, playerOnlineInfo, settings);
+            _saveData = new SaveData(allCharacterInfos, allLevels, playerOnlineInfo, settings);
             SaveToDisk(_saveData);
         }
 

@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using Brawler.GameManagement;
 using Brawler.GameSettings;
-using Brawler.LevelManagment;
+using Brawler.LevelManagement;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,10 +36,11 @@ namespace Brawler.UI
         
         private void Update()
         {
-            if(_gameManager.MenuState != MenuState.OfflineMultiplayer) 
-                return;
+            //if(CustomInputManager.GetButtonDown(_p1ControlsProfile.Start) || CustomInputManager.GetButtonDown(_p2ControlsProfile.Start))
+            //    _gameManager.UpdateMenuState(MenuState.InGamePauseMenu);
 
-            _text.text = (_gameTime -= Time.deltaTime).ToString("F0");
+            if(_gameManager.MenuState == MenuState.OfflineMultiPlayer) 
+                _text.text = (_gameTime -= Time.deltaTime).ToString("F0");
         }
 
         private void UpdateP1(float health)

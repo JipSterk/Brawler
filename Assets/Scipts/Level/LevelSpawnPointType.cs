@@ -1,10 +1,8 @@
-namespace Brawler.LevelManagment
+namespace Brawler.LevelManagement
 {
     public enum LevelSpawnPointType
     {
-        Respawn,
         Player1,
-        Player2,
-        Item
+        Player2
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using Brawler.SaveLoad;
 using UnityEngine.SceneManagement;
 
-namespace Brawler.LevelManagment
+namespace Brawler.LevelManagement
 {
     public class LevelManager : MonoBehaviour
     {

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Brawler.GameManagement;
 using Brawler.GamePlay;
-using Brawler.LevelManagment;
+using Brawler.LevelManagement;
 using Brawler.Networking;
 using Brawler.SaveLoad;
 
@@ -18,9 +19,9 @@ namespace Brawler.GameSettings
         public PlayerOnlineInfo PlayerOnlineInfo { get { return _playerOnlineInfo; } }
         
         public event Callback<GamePlayer, GamePlayer, Level, MatchSettings> OnMatchStart;
-        public event Callback OnMatchEnd;
         public event Callback<MatchSettings> OnMatchSettingsUpdate;
         public event Callback<MenuState> OnUpdateMenuState;
+        public event Callback OnMatchEnd;
 
         [SerializeField] private MatchSettings _matchSettings;
         [SerializeField] private MatchSettings _defaultMatchSettings;
@@ -28,6 +29,7 @@ namespace Brawler.GameSettings
         [SerializeField] private GameCamera _gameCameraPrefab;
 
         private static GameManager _instance;
+        private readonly List<MenuState> _lastMenuStates = new List<MenuState>();
         private MenuState _menuState;
         private Level _level;
         private GamePlayer _player2;
@@ -71,10 +73,23 @@ namespace Brawler.GameSettings
 
         public void UpdateMenuState(MenuState menuState)
         {
+            if(!_lastMenuStates.Contains(menuState))
+                _lastMenuStates.Add(menuState);
+
             _menuState = menuState;
 
             if (OnUpdateMenuState != null)
                 OnUpdateMenuState(_menuState);
+        }
+
+        public void LoadLastMenuState()
+        {
+            if(_lastMenuStates.Count <= 0)
+                return;
+
+            var menuState = _lastMenuStates.Last();
+            UpdateMenuState(menuState);
+            _lastMenuStates.Remove(menuState);
         }
 
         public void AddPlayer(GamePlayer gamePlayer, SelectingForPlayer selectingForPlayer)
@@ -108,8 +123,7 @@ namespace Brawler.GameSettings
                 OnMatchStart(_player1, _player2, _level, _matchSettings);
 
             SetupGameCamera();
-
-            UpdateMenuState(MenuState.OfflineMultiplayer);
+            UpdateMenuState(MenuState.OfflineMultiPlayer);
         }
 
         private void EndMatch()

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Brawler.SaveLoad;
 
-namespace Brawler.GameSettings
+namespace Brawler.GameSettings  
 {
     public class SettingsManager : MonoBehaviour
     {
@@ -33,7 +33,7 @@ namespace Brawler.GameSettings
             SaveLoadManager.Instance.WhenSaveFileExist += LoadSettings;
         }
 
-        public void UpdateSettingsState(Settings settings)
+        public void UpdateSettings(Settings settings)
         {
             _settings = settings;
 

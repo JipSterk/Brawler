@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Brawler.LevelManagment
+namespace Brawler.LevelManagement
 {
     [Serializable]
     public struct LevelData

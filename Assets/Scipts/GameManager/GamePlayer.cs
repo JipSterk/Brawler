@@ -1,22 +1,22 @@
 ﻿using System;
 using Brawler.Characters;
-using Brawler.CustomInput;
+using Rewired;
 
 namespace Brawler.GameSettings
 {
     [Serializable]
     public struct GamePlayer
     {
-        public GamePlayer(Character character, PlayerControlsProfile playerControlsProfile)
+        public GamePlayer(Character character, ControllerMap controllerMap)
         {
             _character = character;
-            _playerControlsProfile = playerControlsProfile;
+            _controllerMap = controllerMap;
         }
 
         public Character Character { get { return _character; } }
-        public PlayerControlsProfile PlayerControlsProfile { get { return _playerControlsProfile; } }
+        public ControllerMap ControllerMap { get { return _controllerMap; } }
 
         private Character _character;
-        private PlayerControlsProfile _playerControlsProfile;
+        private ControllerMap _controllerMap;
     }
 }

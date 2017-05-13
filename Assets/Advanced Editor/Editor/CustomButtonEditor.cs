@@ -10,7 +10,7 @@ namespace Brawler.AdvacedEditor
     {
         [SerializeField] private MenuState _menuState;
         [SerializeField] private LayerMask _layerMask;
-        [SerializeField] private int _heigth = 60;
+        [SerializeField] private int _height = 60;
         [SerializeField] private int _width = 320;
         [SerializeField] private int _fontSize = 28;
         [SerializeField] private Sprite _sprite;
@@ -27,38 +27,39 @@ namespace Brawler.AdvacedEditor
             {
                 layer = _layerMask.value
             };
+
             var layoutElement = uiButton.AddComponent<LayoutElement>();
-            layoutElement.preferredHeight = _heigth;
+            layoutElement.preferredHeight = _height;
 
             var uiButtonRectTransform = uiButton.GetComponent<RectTransform>();
-            uiButtonRectTransform.sizeDelta = new Vector2(_width, _heigth);
+            uiButtonRectTransform.sizeDelta = new Vector2(_width, _height);
 
             var uibutton = uiButton.AddComponent<UiButton>();
             uibutton.MenuState = _menuState;
 
-            var button = new GameObject("BaseButton");
-            button.transform.SetParent(uiButton.transform);
+            var buttonGameObject = new GameObject("Button");
+            buttonGameObject.transform.SetParent(uiButton.transform);
 
-            var buttonRect = button.AddComponent<RectTransform>();
+            var buttonRect = buttonGameObject.AddComponent<RectTransform>();
             buttonRect.anchorMax = new Vector2(1, 1);
             buttonRect.anchorMin = new Vector2(0, 0);
             buttonRect.sizeDelta = Vector2.zero;
 
-            var image = button.AddComponent<Image>();
+            var image = buttonGameObject.AddComponent<Image>();
             image.type = Image.Type.Sliced;
             image.sprite = _sprite;
 
-            button.AddComponent<Button>();
+            buttonGameObject.AddComponent<Button>();
 
-            var textobj = new GameObject("Text");
-            textobj.transform.SetParent(button.transform);
+            var textGameObject = new GameObject("Text");
+            textGameObject.transform.SetParent(buttonGameObject.transform);
 
-            var textRextTransform = textobj.AddComponent<RectTransform>();
-            textRextTransform.anchorMax = new Vector2(1, 1);
-            textRextTransform.anchorMin = new Vector2(0, 0);
-            textRextTransform.sizeDelta = Vector2.zero;
+            var textRectTransform = textGameObject.AddComponent<RectTransform>();
+            textRectTransform.anchorMax = new Vector2(1, 1);
+            textRectTransform.anchorMin = new Vector2(0, 0);
+            textRectTransform.sizeDelta = Vector2.zero;
             
-            var text = textobj.AddComponent<Text>();
+            var text = textGameObject.AddComponent<Text>();
             text.text = _menuState.ToString();
             text.fontSize = _fontSize;
             text.color = Color.black;

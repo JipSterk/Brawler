@@ -1,4 +1,4 @@
-﻿using Brawler.LevelManagment;
+﻿using Brawler.LevelManagement;
 using UnityEditor;
 
 namespace Brawler.AdvacedEditor
@@ -10,9 +10,7 @@ namespace Brawler.AdvacedEditor
         {
             base.OnInspectorGUI();
 
-            var myTarget = (LevelManager)target;
-
-            foreach (var level in myTarget.AllLevels)
+            foreach (var level in ((LevelManager)target).AllLevels)
                 level.Name = level.LevelData.LevelName;
         }
     }
