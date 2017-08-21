@@ -14,10 +14,10 @@ public class RedistInstall {
 #if UNITY_EDITOR_WIN && (!UNITY_5 || UNITY_5_0)
 #if UNITY_EDITOR_64
 		//CopyFile("Assets/Plugins/x86_64", "steam_api64.dll", true);
-        CopyFile("Assets/ThirdParty/Plugins/x86_64", "steam_api64.dll", true);
+        CopyFile("Assets/ThirdParty/Steamworks/Plugins/x86_64", "steam_api64.dll", true);
 #else
-		//CopyFile("Assets/Plugins/x86", "steam_api.dll", true);
-        CopyFile("Assets/ThirdParty/Plugins/x86", "steam_api.dll", true);
+		//CopyFile("Assets/ThirdParty/Plugins/x86", "steam_api.dll", true);
+        CopyFile("Assets/ThirdParty/Steamworks/Plugins/x86", "steam_api.dll", true);
 #endif
 #endif
     }

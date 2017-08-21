@@ -16,7 +16,8 @@
 #elif STEAMWORKS_LIN_OSX
 	// So that we don't trigger the else.
 #else
-	#error You need to define STEAMWORKS_WIN, or STEAMWORKS_LIN_OSX. Refer to the readme for more details.
+    #define STEAMWORKS_WIN
+//	#error You need to define STEAMWORKS_WIN, or STEAMWORKS_LIN_OSX. Refer to the readme for more details.
 #endif
 
 // Unity 32bit Mono on Windows crashes with ThisCall/Cdecl for some reason, StdCall without the 'this' ptr is the only thing that works..? 
